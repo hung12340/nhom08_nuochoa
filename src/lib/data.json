@@ -8,7 +8,7 @@
     "gender": "Nam",
     "description": "Hương thơm nam tính và ấm áp, lý tưởng cho những buổi tối lãng mạn.",
     "images": ["https://orchard.vn/wp-content/uploads/2018/04/dior-sauvage-edp_3.jpg", "https://orchard.vn/wp-content/uploads/2018/04/dior-sauvage-edp_banner-scaled-900x487.jpg"],
-    "stock": 15
+    "stock": 6
   },
   {
     "id": "2",
@@ -19,7 +19,7 @@
     "gender": "Nam",
     "description": "Hương thơm nam tính và gợi cảm, hoàn hảo cho những buổi tối lãng mạn và sự kiện trang trọng.",
     "images": ["https://orchard.vn/wp-content/uploads/2015/04/dior-homme-intense_3.jpg", "https://orchard.vn/wp-content/uploads/2015/04/dior-homme-intense_4.jpg"],
-    "stock": 15
+    "stock": 40
   },
   {
     "id": "3",
@@ -30,7 +30,7 @@
     "gender": "Nam",
     "description": "Hương thơm nam tính và đầy mạnh mẽ, lý tưởng cho những buổi tiệc tối và các sự kiện đặc biệt.",
     "images": ["https://orchard.vn/wp-content/uploads/2022/01/dior-sauvage-elixir_4.jpg", "https://orchard.vn/wp-content/uploads/2022/01/dior-sauvage-elixir_3.jpg"],
-    "stock": 15
+    "stock": 1
   },
   {
     "id": "4",
@@ -41,6 +41,116 @@
     "gender": "Nữ",
     "description": "Hương thơm nữ tính và thanh lịch, lý tưởng cho cả ngày làm việc và các buổi tiệc tối sang trọng.",
     "images": ["https://orchard.vn/wp-content/uploads/2014/06/dior-jadore-edp_3.jpg", "https://orchard.vn/wp-content/uploads/2014/06/dior-jadore-edp-1.webp"],
-    "stock": 15
+    "stock": 5
+  },
+  {
+    "id": "5",
+    "name": "Dior Jadore Infinissime EDP",
+    "brand": "Dior",
+    "price": 3380000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của hoa nhài, hoa hồng và gỗ đàn hương, tạo nên một phong cách quyến rũ, nữ tính và đầy thanh lịch, lý tưởng cho những buổi tối sang trọng.",
+    "images": ["https://orchard.vn/wp-content/uploads/2020/07/dior-jadore-infinissime-edp_3.jpg", "https://orchard.vn/wp-content/uploads/2020/07/dior-jadore-infinissime-edp_poster-900x1204.jpg"],
+    "stock": 43
+  },
+  {
+    "id": "6",
+    "name": "Dior Miss Dior EDP",
+    "brand": "Dior",
+    "price": 3680000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của hoa hồng, hoa mẫu đơn và gỗ đàn hương, tạo nên một phong cách thanh lịch, nữ tính, lý tưởng cho những buổi hẹn hò lãng mạn và các dịp đặc biệt.",
+    "images": ["https://orchard.vn/wp-content/uploads/2021/12/dior-miss-dior-edp-2021_4.jpg", "https://orchard.vn/wp-content/uploads/2021/12/dior-miss-dior-edp-2021_3.jpg"],
+    "stock": 32
+  },
+  {
+    "id": "7",
+    "name": "Dior Miss Dior Blooming Bouquet EDT",
+    "brand": "Dior",
+    "price": 3480000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của quả mơ, hoa mẫu đơn và xạ hương, tạo nên một phong cách tươi trẻ, ngọt ngào, lý tưởng cho những ngày xuân và các buổi dạo phố nhẹ nhàng.",
+    "images": ["https://orchard.vn/wp-content/uploads/2024/07/dior-miss-dior-blooming-bouquet_3.jpg", "https://orchard.vn/wp-content/uploads/2024/07/dior-miss-dior-blooming-bouquet_2.jpg"],
+    "stock": 10
+  },
+  {
+    "id": "8",
+    "name": "Dior Joy EDP",
+    "brand": "Dior",
+    "price": 2880000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của cam bergamot, hoa nhài và gỗ đàn hương, mang đến một phong cách tươi mới, nữ tính, lý tưởng cho những ngày xuân và các dịp gặp gỡ bạn bè.",
+    "images": ["https://orchard.vn/wp-content/uploads/2024/07/dior-joy-edp_3.jpg", "https://orchard.vn/wp-content/uploads/2024/07/dior-joy-edp_2.jpg"],
+    "stock": 0
+  },
+  {
+    "id": "9",
+    "name": "Chanel Bleu De Chanel EDP",
+    "brand": "Chanel",
+    "price": 3780000,
+    "volume": "100ml",
+    "gender": "Nam",
+    "description": "Hương thơm nam tính và tinh tế, lý tưởng cho mọi dịp từ công sở đến tiệc tối.",
+    "images": ["https://orchard.vn/wp-content/uploads/2015/01/chanel-bleu-de-chanel-edp_3.jpg", "https://orchard.vn/wp-content/uploads/2015/01/chanel-bleu-de-chanel-edp_4.jpg"],
+    "stock": 23
+  },
+  {
+    "id": "10",
+    "name": "Chanel Allure Homme Sport EDT",
+    "brand": "Chanel",
+    "price": 3280000,
+    "volume": "100ml",
+    "gender": "Nam",
+    "description": "Hương thơm năng động và tươi mát, lý tưởng cho những ngày hè và các hoạt động thể thao.",
+    "images": ["https://orchard.vn/wp-content/uploads/2014/06/chanel-allure-homme-sport-edt_3.jpg", "https://orchard.vn/wp-content/uploads/2014/06/chanel-allure-homme-sport-edt_4.jpg"],
+    "stock": 67
+  },
+  {
+    "id": "11",
+    "name": "Chanel Coco Mademoiselle EDP",
+    "brand": "Chanel",
+    "price": 4480000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm sang trọng và quyến rũ, lý tưởng cho các buổi tối sang trọng và những dịp đặc biệt.",
+    "images": ["https://orchard.vn/wp-content/uploads/2014/06/chanel-coco-mademoiselle_9.jpg", "https://orchard.vn/wp-content/uploads/2014/06/chanel-coco-mademoiselle_5.jpg"],
+    "stock": 12
+  },
+  {
+    "id": "12",
+    "name": "Chanel Chance Eau Tendre EDP",
+    "brand": "Chanel",
+    "price": 4480000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm ngọt ngào, thanh lịch, lý tưởng cho những buổi tiệc nhẹ nhàng và các sự kiện quan trọng.",
+    "images": ["https://orchard.vn/wp-content/uploads/2019/02/chanel-chance-eau-tendre-edp_7-900x1124.jpg", "https://orchard.vn/wp-content/uploads/2019/02/chanel-chance-eau-tendre-edp_4.jpg"],
+    "stock": 6
+  },
+  {
+    "id": "13",
+    "name": "Chanel Gabrielle EDP",
+    "brand": "Chanel",
+    "price": 3980000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của hoa nhài, hoa ylang-ylang và gỗ đàn hương, tạo nên một phong cách thanh lịch, quyến rũ và đầy tự do, lý tưởng cho những buổi tối lãng mạn và các sự kiện đặc biệt.",
+    "images": ["https://orchard.vn/wp-content/uploads/2017/09/chanel-gabrielle_3.jpg", "https://orchard.vn/wp-content/uploads/2017/09/chanel-gabrielle_5.jpg"],
+    "stock": 8
+  },
+  {
+    "id": "14",
+    "name": "Chanel Coco Noir EDP",
+    "brand": "Chanel",
+    "price": 4580000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của bưởi, hoa nhài và đậu tonka, tạo nên một phong cách bí ẩn, quyến rũ và sang trọng, lý tưởng cho những buổi tối lãng mạn và các sự kiện trang trọng.",
+    "images": ["https://orchard.vn/wp-content/uploads/2024/07/chanel-coco-noir_3.jpg", "https://orchard.vn/wp-content/uploads/2024/07/chanel-coco-noir_2.jpg"],
+    "stock": 19
   }
 ]

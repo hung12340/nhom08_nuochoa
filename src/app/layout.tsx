@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/layout/Footer";
+import Chatbot from "@/components/ui/Chatbot";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -33,7 +35,8 @@ export default function RootLayout({
           <main className="flex-grow">
             {children}
           </main>
-
+          <Footer />
+          <Chatbot />
       </body>
     </html>
   );
