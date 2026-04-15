@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1",
+    "name": "Dior Sauvage EDP",
+    "brand": "Dior",
+    "price": 3480000,
+    "volume": "100ml",
+    "gender": "Nam",
+    "description": "Hương thơm nam tính và ấm áp, lý tưởng cho những buổi tối lãng mạn.",
+    "images": ["https://orchard.vn/wp-content/uploads/2018/04/dior-sauvage-edp_3.jpg", "https://orchard.vn/wp-content/uploads/2018/04/dior-sauvage-edp_banner-scaled-900x487.jpg"],
+    "stock": 15
+  },
+  {
+    "id": "2",
+    "name": "Dior Homme Intense EDP",
+    "brand": "Dior",
+    "price": 3580000,
+    "volume": "150ml",
+    "gender": "Nam",
+    "description": "Hương thơm nam tính và gợi cảm, hoàn hảo cho những buổi tối lãng mạn và sự kiện trang trọng.",
+    "images": ["https://orchard.vn/wp-content/uploads/2015/04/dior-homme-intense_3.jpg", "https://orchard.vn/wp-content/uploads/2015/04/dior-homme-intense_4.jpg"],
+    "stock": 15
+  },
+  {
+    "id": "3",
+    "name": "Dior Sauvage Elixir EDP",
+    "brand": "Dior",
+    "price": 4980000,
+    "volume": "60ml",
+    "gender": "Nam",
+    "description": "Hương thơm nam tính và đầy mạnh mẽ, lý tưởng cho những buổi tiệc tối và các sự kiện đặc biệt.",
+    "images": ["https://orchard.vn/wp-content/uploads/2022/01/dior-sauvage-elixir_4.jpg", "https://orchard.vn/wp-content/uploads/2022/01/dior-sauvage-elixir_3.jpg"],
+    "stock": 15
+  },
+  {
+    "id": "4",
+    "name": "Dior Jadore EDP",
+    "brand": "Dior",
+    "price": 3980000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm nữ tính và thanh lịch, lý tưởng cho cả ngày làm việc và các buổi tiệc tối sang trọng.",
+    "images": ["https://orchard.vn/wp-content/uploads/2014/06/dior-jadore-edp_3.jpg", "https://orchard.vn/wp-content/uploads/2014/06/dior-jadore-edp-1.webp"],
+    "stock": 15
+  }
+]
