@@ -60,7 +60,6 @@ export default function ContactPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Clear error for this field when user starts typing
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -77,10 +76,8 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      // Save to localStorage for demo purposes
       const messages = JSON.parse(localStorage.getItem('contact-messages') || '[]');
       messages.push({
         id: Math.random().toString(36).substr(2, 9),
@@ -97,7 +94,6 @@ export default function ContactPage() {
         message: '',
       });
 
-      // Reset submitted state after 5 seconds
       setTimeout(() => setSubmitted(false), 5000);
     } catch (err) {
       setError('Đã xảy ra lỗi. Vui lòng thử lại.');
@@ -107,138 +103,155 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] text-[#1A1A1A] font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-[#F9F9F9] via-white to-[#F9F9F9] text-[#1A1A1A] font-sans">
       {/* Hero Section */}
-      <div className="bg-[#1A1A1A] text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-serif text-5xl md:text-6xl mb-4 tracking-wide">
+      <div className="relative bg-gradient-to-r from-[#1A1A1A] to-[#2d2d2d] text-white py-28 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37] rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#D4AF37] rounded-full blur-3xl"></div>
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="font-serif text-6xl md:text-7xl mb-5 tracking-wide drop-shadow-lg">
             Liên Hệ Với Chúng Tôi
           </h1>
           <p className="text-[#D4AF37] tracking-widest uppercase text-sm font-semibold">
-            Chúng tôi luôn sẵn lòng lắng nghe
+            ✨ Chúng tôi luôn sẵn lòng lắng nghe bạn ✨
           </p>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-12 mb-20">
-          {/* Contact Info Cards */}
-          <div className="bg-white rounded-lg shadow-md p-8 text-center hover:shadow-lg transition-shadow">
-            <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg
-                className="w-8 h-8 text-[#1A1A1A]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+      <div className="container mx-auto px-4 py-20">
+        {/* Contact Info Cards */}
+        <div className="grid md:grid-cols-3 gap-8 mb-24 animate-fade-in">
+          {/* Email Card */}
+          <div className="group relative bg-white rounded-2xl shadow-xl p-10 text-center hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 border border-gray-100 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="w-24 h-24 bg-gradient-to-br from-[#D4AF37] to-[#c99e2e] rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-125 transition-transform duration-300 shadow-lg">
+                <svg
+                  className="w-12 h-12 text-[#1A1A1A]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h3 className="font-serif text-3xl mb-3">📧 Email</h3>
+              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                Gửi email cho chúng tôi bất kỳ lúc nào. Chúng tôi sẽ phản hồi trong 24 giờ.
+              </p>
+              <a
+                href="mailto:info@aromis.com"
+                className="inline-block text-[#D4AF37] font-bold hover:text-[#1A1A1A] transition-colors text-lg border-b-2 border-[#D4AF37] pb-1"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
+                info@aromis.com
+              </a>
             </div>
-            <h3 className="font-serif text-xl mb-2">Email</h3>
-            <p className="text-gray-600 mb-4 text-sm">
-              Gửi email cho chúng tôi bất kỳ lúc nào
-            </p>
-            <a
-              href="mailto:info@aromis.com"
-              className="text-[#D4AF37] font-semibold hover:text-[#1A1A1A] transition-colors"
-            >
-              info@aromis.com
-            </a>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-8 text-center hover:shadow-lg transition-shadow">
-            <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg
-                className="w-8 h-8 text-[#1A1A1A]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          {/* Phone Card */}
+          <div className="group relative bg-white rounded-2xl shadow-xl p-10 text-center hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 border border-gray-100 overflow-hidden delay-100">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="w-24 h-24 bg-gradient-to-br from-[#D4AF37] to-[#c99e2e] rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-125 transition-transform duration-300 shadow-lg">
+                <svg
+                  className="w-12 h-12 text-[#1A1A1A]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+              </div>
+              <h3 className="font-serif text-3xl mb-3">📱 Điện Thoại</h3>
+              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                Gọi cho chúng tôi từ thứ 2 đến thứ 6, 9AM - 6PM
+              </p>
+              <a
+                href="tel:+84123456789"
+                className="inline-block text-[#D4AF37] font-bold hover:text-[#1A1A1A] transition-colors text-lg border-b-2 border-[#D4AF37] pb-1"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                />
-              </svg>
+                +84 (123) 456-789
+              </a>
             </div>
-            <h3 className="font-serif text-xl mb-2">Điện Thoại</h3>
-            <p className="text-gray-600 mb-4 text-sm">
-              Gọi cho chúng tôi từ thứ 2 đến thứ 6
-            </p>
-            <a
-              href="tel:+84123456789"
-              className="text-[#D4AF37] font-semibold hover:text-[#1A1A1A] transition-colors"
-            >
-              +84 (123) 456-789
-            </a>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-8 text-center hover:shadow-lg transition-shadow">
-            <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg
-                className="w-8 h-8 text-[#1A1A1A]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+          {/* Location Card */}
+          <div className="group relative bg-white rounded-2xl shadow-xl p-10 text-center hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 border border-gray-100 overflow-hidden delay-200">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="w-24 h-24 bg-gradient-to-br from-[#D4AF37] to-[#c99e2e] rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-125 transition-transform duration-300 shadow-lg">
+                <svg
+                  className="w-12 h-12 text-[#1A1A1A]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="font-serif text-3xl mb-3">📍 Địa Chỉ</h3>
+              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                Ghé thăm cửa hàng phiên lưu của chúng tôi
+              </p>
+              <p className="text-[#D4AF37] font-bold text-lg border-b-2 border-[#D4AF37] pb-1 inline-block">
+                123 Ngô Tất Tố, Hà Nội
+              </p>
             </div>
-            <h3 className="font-serif text-xl mb-2">Địa Chỉ</h3>
-            <p className="text-gray-600 mb-4 text-sm">
-              Ghé thăm cửa hàng của chúng tôi
-            </p>
-            <p className="text-[#D4AF37] font-semibold">
-              123 Ngô Tất Tố, Hà Nội, Việt Nam
-            </p>
           </div>
         </div>
 
         {/* Contact Form & Map */}
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="font-serif text-3xl mb-8 text-[#1A1A1A]">
-              Gửi Tin Nhắn Cho Chúng Tôi
+          <div className="bg-white rounded-2xl shadow-xl p-10 border border-gray-100 animate-fade-in">
+            <h2 className="font-serif text-4xl mb-2 text-[#1A1A1A]">
+              Gửi Tin Nhắn
             </h2>
+            <p className="text-gray-600 mb-8 text-sm">Để lại lời nhắn cho chúng tôi</p>
 
             {submitted && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-green-600 font-semibold text-sm">
-                  ✓ Cảm ơn bạn đã liên hệ! Chúng tôi sẽ trả lời trong 24 giờ.
+              <div className="mb-8 p-5 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg animate-pulse">
+                <p className="text-green-700 font-bold text-sm">
+                  ✓ Cảm ơn bạn! Chúng tôi sẽ trả lời trong 24 giờ.
                 </p>
               </div>
             )}
 
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600 font-semibold text-sm">{error}</p>
+              <div className="mb-8 p-5 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 rounded-lg">
+                <p className="text-red-700 font-bold text-sm">⚠ {error}</p>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
               <div>
-                <label className="block text-sm font-semibold text-[#1A1A1A] mb-2 uppercase tracking-wider">
-                  Họ và Tên
+                <label className="block text-xs font-bold text-[#1A1A1A] mb-3 uppercase tracking-[0.15em]">
+                  👤 Họ và Tên
                 </label>
                 <input
                   type="text"
@@ -246,43 +259,39 @@ export default function ContactPage() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Nhập họ và tên"
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all ${
-                    errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 focus:border-[#D4AF37] transition-all duration-300 ${
+                    errors.name ? 'border-red-400 bg-red-50' : 'border-gray-200'
                   }`}
                 />
                 {errors.name && (
-                  <p className="text-red-600 text-xs mt-2 font-medium">
-                    {errors.name}
-                  </p>
+                  <p className="text-red-600 text-xs mt-2 font-semibold">🔴 {errors.name}</p>
                 )}
               </div>
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-semibold text-[#1A1A1A] mb-2 uppercase tracking-wider">
-                  Email
+                <label className="block text-xs font-bold text-[#1A1A1A] mb-3 uppercase tracking-[0.15em]">
+                  📧 Email
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="example@email.com"
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all ${
-                    errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  placeholder="your@email.com"
+                  className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 focus:border-[#D4AF37] transition-all duration-300 ${
+                    errors.email ? 'border-red-400 bg-red-50' : 'border-gray-200'
                   }`}
                 />
                 {errors.email && (
-                  <p className="text-red-600 text-xs mt-2 font-medium">
-                    {errors.email}
-                  </p>
+                  <p className="text-red-600 text-xs mt-2 font-semibold">🔴 {errors.email}</p>
                 )}
               </div>
 
               {/* Subject */}
               <div>
-                <label className="block text-sm font-semibold text-[#1A1A1A] mb-2 uppercase tracking-wider">
-                  Chủ Đề
+                <label className="block text-xs font-bold text-[#1A1A1A] mb-3 uppercase tracking-[0.15em]">
+                  💬 Chủ Đề
                 </label>
                 <input
                   type="text"
@@ -290,36 +299,32 @@ export default function ContactPage() {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder="Nhập chủ đề"
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all ${
-                    errors.subject ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 focus:border-[#D4AF37] transition-all duration-300 ${
+                    errors.subject ? 'border-red-400 bg-red-50' : 'border-gray-200'
                   }`}
                 />
                 {errors.subject && (
-                  <p className="text-red-600 text-xs mt-2 font-medium">
-                    {errors.subject}
-                  </p>
+                  <p className="text-red-600 text-xs mt-2 font-semibold">🔴 {errors.subject}</p>
                 )}
               </div>
 
               {/* Message */}
               <div>
-                <label className="block text-sm font-semibold text-[#1A1A1A] mb-2 uppercase tracking-wider">
-                  Nội Dung
+                <label className="block text-xs font-bold text-[#1A1A1A] mb-3 uppercase tracking-[0.15em]">
+                  📝 Nội Dung
                 </label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Nhập nội dung tin nhắn"
+                  placeholder="Nhập nội dung tin nhắn (tối thiểu 10 ký tự)"
                   rows={6}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all resize-none ${
-                    errors.message ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 focus:border-[#D4AF37] transition-all duration-300 resize-none ${
+                    errors.message ? 'border-red-400 bg-red-50' : 'border-gray-200'
                   }`}
                 />
                 {errors.message && (
-                  <p className="text-red-600 text-xs mt-2 font-medium">
-                    {errors.message}
-                  </p>
+                  <p className="text-red-600 text-xs mt-2 font-semibold">🔴 {errors.message}</p>
                 )}
               </div>
 
@@ -327,19 +332,26 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-3 px-4 font-bold tracking-widest uppercase transition-all duration-300 ${
+                className={`w-full py-3 px-4 font-bold tracking-widest uppercase transition-all duration-300 rounded-lg text-sm mt-8 transform hover:scale-105 active:scale-95 ${
                   loading
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-[#D4AF37] text-[#1A1A1A] hover:bg-[#c99e2e] shadow-md hover:shadow-lg'
+                    : 'bg-gradient-to-r from-[#D4AF37] to-[#c99e2e] text-[#1A1A1A] hover:shadow-lg shadow-md'
                 }`}
               >
-                {loading ? 'Đang gửi...' : 'Gửi Tin Nhắn'}
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <span className="animate-spin mr-2">⏳</span>
+                    Đang gửi...
+                  </span>
+                ) : (
+                  '✉️ GỬI TIN NHẮN'
+                )}
               </button>
             </form>
           </div>
 
           {/* Google Maps Embed */}
-          <div className="rounded-lg shadow-md overflow-hidden h-full min-h-[500px]">
+          <div className="rounded-2xl shadow-xl overflow-hidden h-full min-h-[500px] border border-gray-100 animate-fade-in delay-100">
             <iframe
               width="100%"
               height="100%"
@@ -353,15 +365,38 @@ export default function ContactPage() {
         </div>
 
         {/* Back to Home */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-20">
           <Link
             href="/"
-            className="inline-block text-gray-600 hover:text-[#D4AF37] transition-colors uppercase tracking-wider font-semibold"
+            className="inline-block text-gray-600 hover:text-[#D4AF37] transition-colors uppercase tracking-wider font-semibold hover:-translate-x-1 duration-300"
           >
             ← Quay về trang chủ
           </Link>
         </div>
       </div>
+
+      {/* CSS for animations */}
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out;
+        }
+        .delay-100 {
+          animation-delay: 0.1s;
+        }
+        .delay-200 {
+          animation-delay: 0.2s;
+        }
+      `}</style>
     </div>
   );
 }
