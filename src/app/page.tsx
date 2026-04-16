@@ -20,7 +20,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto flex flex-col items-center">
-          <span className="text-[#D4AF37] tracking-[0.3em] uppercase text-sm font-semibold mb-4 block">
+          <span className="text-[#D4AF37] tracking-[0.3em] uppercase text-2xl font-semibold mb-4 block">
             Aromis
           </span>
           <h1 className="text-5xl md:text-7xl font-serif mb-6 leading-tight text-white">
@@ -83,7 +83,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-24 bg-white border-t border-gray-100">
+      <section className="py-10 bg-white border-t border-gray-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-serif text-[#1A1A1A] mb-4">Hương Thơm Mới Nhất</h2>

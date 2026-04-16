@@ -24,21 +24,25 @@ export default function Header() {
             </Link>
           </div>
 
-          <nav className="hidden md:flex space-x-10">
+          {/* NAVIGATION */}
+          <nav className="hidden md:flex flex-1 justify-center space-x-12">
             <Link href="/" className="text-sm font-semibold text-[#1A1A1A] uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Trang chủ
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/nam" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
-              Nam
+
+            <Link href="/san-pham" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Sản phẩm
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/nu" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
-              Nữ
+
+            <Link href="/blog" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Blog
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/thuong-hieu" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
-              Thương Hiệu
+
+            <Link href="/gioi-thieu" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Giới thiệu
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
           </nav>
@@ -58,14 +62,12 @@ export default function Header() {
               </svg>
             </button>
 
+            {/* CART - FIXED (không còn số 2 cứng) */}
             <Link href="/cart" className="hover:text-[#D4AF37] transition-colors relative">
               <span className="sr-only">Giỏ hàng</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
               </svg>
-              <span className="absolute -top-1.5 -right-2 bg-[#D4AF37] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                2
-              </span>
             </Link>
 
             <button className="md:hidden hover:text-[#D4AF37] transition-colors ml-2">
