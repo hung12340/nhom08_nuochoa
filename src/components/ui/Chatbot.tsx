@@ -28,16 +28,25 @@ export default function Chatbot() {
     try {
       const GROQ_API_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY; 
       if (!GROQ_API_KEY) throw new Error("Thiếu API Key");
-      const chatMemory = messages.slice(-6).map(msg => ({
+      const chatMemory = messages.slice(-4).map(msg => ({
         role: msg.sender === 'bot' ? 'assistant' : 'user',
         content: msg.text
+      }));
+
+      const optimizedData = products.slice(0, 15).map(p => ({
+        n: p.name,
+        b: p.brand,
+        p: p.price,
+        g: p.gender,
+        s: p.stock,
+        d: p.description.slice(0, 50)
       }));
 
       const apiMessages = [
         {
           role: "system",
           content: `Bạn là Chuyên gia tư vấn hương thơm (Fragrance Sommelier) độc quyền của thương hiệu xa xỉ Aromis.
-          Dữ liệu sản phẩm nội bộ: ${JSON.stringify(products.slice(0, 15))}
+          Dữ liệu sản phẩm nội bộ: ${JSON.stringify(optimizedData)}
 
           PHONG CÁCH GIAO TIẾP "TỰ NHIÊN & TINH TẾ":
           - Xưng hô: Tự xưng là "Aromis", gọi khách là "Quý khách". (Tuyệt đối không dùng "tôi", "mình", "AI", "Bot"). 
