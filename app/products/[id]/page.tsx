@@ -47,6 +47,9 @@ export default async function ProductDetail({ params }: any) {
         </div>
 
       </div>
+      <h2 className="mt-4 text-sm text-gray-400">
+  Aromis – Đẳng cấp đến từ sự chân thực
+</h2>
 
       {/* 🔹 SẢN PHẨM GỢI Ý */}
       <div className="mt-12">
