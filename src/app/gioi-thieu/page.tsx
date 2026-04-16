@@ -65,7 +65,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* STORY (GIỮ NGUYÊN NỘI DUNG CŨ) */}
+        {/* STORY */}
         <div className="bg-white/90 backdrop-blur-lg border border-gray-100 shadow-xl rounded-3xl p-10 md:p-14 mb-20 leading-8 text-gray-700 text-[16px]">
 
           <p>
@@ -142,6 +142,7 @@ export default function AboutPage() {
                     width={92}
                     height={92}
                     className="rounded-full object-cover bg-white"
+                     style={{ width: "92px", height: "92px" }}
                   />
                 </div>
               </div>
