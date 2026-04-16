@@ -30,7 +30,7 @@ Là “trái tim” của nước hoa. Thường lưu 30–60 phút.
 🌳 Hương cuối (Base notes):
 Là lớp hương giữ lâu nhất. Có thể lưu nhiều giờ.
 
-👉 Vì vậy, đừng đánh giá nước hoa ngay lúc vừa xịt.`,
+👉 Vì vậy, không nên đánh giá nước hoa ngay lúc vừa xịt.`,
     image:
       "https://images.unsplash.com/photo-1621240662590-d3eecd0ba64e?q=80&w=774&auto=format&fit=crop",
   },
