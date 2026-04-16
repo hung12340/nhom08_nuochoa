@@ -1,1 +1,1 @@
-export const BASE_PATH = '/nhom08_nuochoa';
+export const BASE_PATH = '';
