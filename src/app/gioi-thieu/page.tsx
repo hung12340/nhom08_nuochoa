@@ -9,39 +9,39 @@ const playfair = Playfair_Display({
 
 const members = [
   {
-    name: "Nguyễn Văn A",
-    mssv: "23123456",
-    role: "Leader / Frontend",
-    github: "https://github.com/",
-    avatar: "https://i.pravatar.cc/150?img=1",
+    name: "Lê Xuân Hùng",
+    mssv: "24126092",
+    role: "Team Lead / Frontend Developer",
+    github: "https://github.com/hung12340",
+    avatar: "images/hung.jpg",
   },
   {
-    name: "Trần Thị B",
-    mssv: "23123457",
+    name: "Trần Thị Như Hậu",
+    mssv: "24126071",
     role: "UI/UX Designer",
-    github: "https://github.com/",
-    avatar: "https://i.pravatar.cc/150?img=2",
+    github: "https://github.com/24126071-creator",
+    avatar: "images/nhuhau.jpg",
   },
   {
-    name: "Lê Văn C",
-    mssv: "23123458",
-    role: "Backend",
-    github: "https://github.com/",
-    avatar: "https://i.pravatar.cc/150?img=3",
+    name: "Trần Phan Minh Hoài",
+    mssv: "24126077",
+    role: "Backend Developer",
+    github: "https://github.com/shinnhehe",
+    avatar: "images/minhhoai.jpg",
   },
   {
-    name: "Phạm Thị D",
-    mssv: "23123459",
-    role: "Database",
-    github: "https://github.com/",
-    avatar: "https://i.pravatar.cc/150?img=4",
+    name: "Phạm Lê Diệu Hoàng",
+    mssv: "24126078",
+    role: "Frontend Developer",
+    github: "https://github.com/dieuhoangpham2-gif",
+    avatar: "images/dieuhoang.jpg",
   },
   {
-    name: "Hoàng Văn E",
-    mssv: "23123460",
-    role: "Tester / Support",
+    name: "Trần Thanh Hoàng",
+    mssv: "24126082",
+    role: "Frontend Developer",
     github: "https://github.com/",
-    avatar: "https://i.pravatar.cc/150?img=5",
+    avatar: "images/thanhhoang.jpg",
   },
 ];
 
@@ -131,7 +131,7 @@ export default function AboutPage() {
                   alt={m.name}
                   width={90}
                   height={90}
-                  className="rounded-full"
+                  className="rounded-full object-cover"
                 />
               </div>
 
