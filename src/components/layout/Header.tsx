@@ -41,6 +41,10 @@ export default function Header() {
               Thương Hiệu
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
+            <Link href="/contact" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Liên Hệ
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+            </Link>
           </nav>
 
           <div className="flex items-center space-x-5 md:space-x-6 text-[#1A1A1A]">
@@ -51,12 +55,12 @@ export default function Header() {
               </svg>
             </button>
             
-            <button className="hover:text-[#D4AF37] transition-colors hidden sm:block">
+            <Link href="/(auth)" className="hover:text-[#D4AF37] transition-colors hidden sm:block">
               <span className="sr-only">Tài khoản</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
               </svg>
-            </button>
+            </Link>
 
             <Link href="/cart" className="hover:text-[#D4AF37] transition-colors relative">
               <span className="sr-only">Giỏ hàng</span>
