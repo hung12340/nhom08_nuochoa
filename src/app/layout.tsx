@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Chatbot from "@/components/ui/Chatbot";
 
@@ -31,7 +32,7 @@ export default function RootLayout({
     >
       {/* Set màu nền, màu chữ và font mặc định cho toàn bộ website */}
       <body className="min-h-full flex flex-col bg-[#F9F9F9] text-[#1A1A1A] font-sans">
-        
+          <Header />
           <main className="flex-grow">
             {children}
           </main>

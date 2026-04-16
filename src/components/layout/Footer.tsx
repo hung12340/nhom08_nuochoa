@@ -1,8 +1,20 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image"; 
 import { BASE_PATH } from '@/lib/constants';
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault(); 
+    if (!email.trim()) return; 
+    setIsSubscribed(true);
+  };
+
   return (
     <footer className="bg-[#1A1A1A] text-[#F9F9F9] pt-16 pb-8 font-sans border-t border-[#D4AF37]/30">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -15,7 +27,8 @@ export default function Footer() {
                 alt="Aromis Perfume Logo"
                 width={125} 
                 height={125} 
-                priority // Ưu tiên load ảnh này
+                priority 
+                className="object-contain"
               />
             </Link>
             
@@ -60,19 +73,33 @@ export default function Footer() {
             <p className="text-gray-400 font-light mb-4">
               Đăng ký để nhận ưu đãi độc quyền và thông tin về những mùi hương mới nhất.
             </p>
-            <form className="flex flex-col space-y-3">
-              <input 
-                type="email" 
-                placeholder="Email của bạn..." 
-                className="bg-transparent border-b border-gray-600 py-2 px-1 text-white focus:outline-none focus:border-[#D4AF37] transition-colors font-light placeholder-gray-500"
-              />
-              <button 
-                type="button"
-                className="bg-[#D4AF37] text-[#1A1A1A] py-3 uppercase tracking-widest font-semibold hover:bg-white transition-colors mt-2 text-sm"
-              >
-                Đăng ký
-              </button>
-            </form>
+            
+            {isSubscribed ? (
+              <div className="bg-[#D4AF37]/10 border border-[#D4AF37] p-4 mt-2 rounded-sm transform transition-all duration-500 ease-out">
+                <p className="text-[#D4AF37] font-medium text-sm flex items-center gap-2">
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>Đã đăng ký nhận tin thành công <br/> Cảm ơn Quý khách</span>
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex flex-col space-y-3 mt-2">
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="Email của bạn..." 
+                  className="bg-transparent border-b border-gray-600 py-2 px-1 text-white focus:outline-none focus:border-[#D4AF37] transition-colors font-light placeholder-gray-500"
+                />
+                <button 
+                  type="submit"
+                  className="bg-[#D4AF37] text-[#1A1A1A] py-3 uppercase tracking-widest font-semibold hover:bg-white transition-colors mt-2 text-sm disabled:opacity-50"
+                >
+                  Đăng ký
+                </button>
+              </form>
+            )}
+
           </div>
 
         </div>
