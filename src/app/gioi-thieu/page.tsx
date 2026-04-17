@@ -40,7 +40,7 @@ const members = [
     name: "Trần Thanh Hoàng",
     mssv: "24126082",
     role: "Frontend Developer",
-    github: "https://github.com/",
+    github: "https://github.com/thazhhoang99",
     avatar: "images/thanhhoang.jpg",
   },
 ];
