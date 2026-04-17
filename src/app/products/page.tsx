@@ -179,7 +179,7 @@ export default function ProductsPage() {
                     className="w-1/2 border border-gray-200 rounded-lg p-3 bg-white/90 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Tự động áp dụng sau khi dừng gõ</p>
+              
               </div>
 
               <button

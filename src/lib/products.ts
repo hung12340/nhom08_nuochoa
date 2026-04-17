@@ -1,4 +1,4 @@
-import productsData from '@/data/products.json';
+import productsData from '@/lib/data.json';
 
 export interface Product {
   id: string;
@@ -17,8 +17,10 @@ export const products: Product[] = productsData as Product[];
 
 export const getAllProducts = (): Product[] => products;
 
-export const getProductById = (id: string): Product | undefined =>
-  products.find(p => p.id === id);
+export const getProductById = (id: string) => {
+  console.log('Looking for id:', id, 'in', products.map(p => p.id));
+  return products.find(p => p.id === id);
+};
 
 export const getRelatedProducts = (currentId: string, gender?: string, limit = 4): Product[] =>
   products
