@@ -47,7 +47,7 @@ const members = [
 
 export default function AboutPage() {
   return (
-    <div className="bg-gradient-to-b from-[#F9F9F9] to-[#F3F3F3] min-h-screen py-24 px-6">
+    <div className="bg-[#F9F9F9] min-h-screen py-24 px-6 font-sans">
       <div className="max-w-6xl mx-auto">
 
         {/* TITLE */}
@@ -60,13 +60,13 @@ export default function AboutPage() {
 
           <div className="w-24 h-[2px] bg-[#D4AF37] mx-auto mt-6"></div>
 
-          <p className="text-gray-500 mt-4 text-sm tracking-widest">
+          <p className="text-[#1A1A1A]/60 mt-4 text-sm tracking-widest font-sans">
             ELEGANCE • SCENT • EXPERIENCE
           </p>
         </div>
 
         {/* STORY */}
-        <div className="bg-white/90 backdrop-blur-lg border border-gray-100 shadow-xl rounded-3xl p-10 md:p-14 mb-20 leading-8 text-gray-700 text-[16px]">
+        <div className="bg-white/90 backdrop-blur-lg border border-[#1A1A1A]/5 shadow-xl rounded-3xl p-10 md:p-14 mb-20 leading-8 text-[#1A1A1A]/75 text-[16px] font-sans">
 
           <p>
             Aromis ra đời vào năm 2024, bắt nguồn từ niềm đam mê sâu sắc với
@@ -82,7 +82,7 @@ export default function AboutPage() {
           <p>
             Lấy cảm hứng từ sự tối giản hiện đại kết hợp với tinh thần sang
             trọng vượt thời gian, Aromis theo đuổi triết lý thiết kế “minimal but meaningful”
-            đơn giản trong hình thức, nhưng sâu sắc trong trải nghiệm. Mỗi sản
+            đơn giản trong hình thức nhưng sâu sắc trong trải nghiệm. Mỗi sản
             phẩm đều được tạo nên với sự chọn lọc kỹ lưỡng, từ nguyên liệu hương
             thơm cho đến cách cân bằng các tầng hương, nhằm mang lại một hành
             trình mùi hương trọn vẹn và khác biệt.
@@ -120,7 +120,7 @@ export default function AboutPage() {
 
         {/* MEMBERS TITLE */}
         <h2
-          className={`${playfair.className} text-4xl md:text-5xl font-light text-center mb-14 tracking-wider`}
+          className={`${playfair.className} text-4xl md:text-5xl font-light text-center mb-14 tracking-wider text-[#1A1A1A]`}
         >
           Thành viên nhóm
         </h2>
@@ -131,38 +131,38 @@ export default function AboutPage() {
           {members.map((m, index) => (
             <div
               key={index}
-              className="group bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-500 p-6 text-center hover:-translate-y-2"
+              className="group bg-white rounded-3xl border border-[#1A1A1A]/5 shadow-md hover:shadow-2xl transition-all duration-500 p-6 text-center hover:-translate-y-2"
             >
 
               <div className="flex justify-center mb-5">
-                <div className="p-[2px] rounded-full bg-gradient-to-tr from-[#D4AF37] to-gray-200">
+                <div className="p-[2px] rounded-full bg-gradient-to-tr from-[#D4AF37] to-[#1A1A1A]/10">
                   <Image
                     src={m.avatar}
                     alt={m.name}
                     width={92}
                     height={92}
                     className="rounded-full object-cover bg-white"
-                     style={{ width: "92px", height: "92px" }}
+                    style={{ width: "92px", height: "92px" }}
                   />
                 </div>
               </div>
 
-              <h3 className="text-lg font-semibold text-[#1A1A1A] group-hover:text-[#D4AF37] transition">
+              <h3 className="text-lg font-semibold text-[#1A1A1A] group-hover:text-[#D4AF37] transition font-sans">
                 {m.name}
               </h3>
 
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-[#1A1A1A]/60 mt-1 font-sans">
                 MSSV: {m.mssv}
               </p>
 
-              <p className="text-sm text-gray-700 mt-2">
+              <p className="text-sm text-[#1A1A1A]/75 mt-2 font-sans">
                 {m.role}
               </p>
 
               <Link
                 href={m.github}
                 target="_blank"
-                className="inline-block mt-5 text-sm font-medium text-black group-hover:text-[#D4AF37] transition"
+                className="inline-block mt-5 text-sm font-medium text-[#1A1A1A] group-hover:text-[#D4AF37] transition font-sans"
               >
                 GitHub →
               </Link>
