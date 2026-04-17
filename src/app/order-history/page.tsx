@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAuthState } from '@/store/authStore';
-import { getOrders, initializeMockOrders } from '@/store/orderStore';
+import { getOrdersByUserId, initializeMockOrders } from '@/store/orderStore';
 
 interface OrderItem {
   name: string;
@@ -13,6 +13,7 @@ interface OrderItem {
 
 interface Order {
   orderId: string;
+  userId: string;
   purchaseDate: string;
   status: 'Chờ xác nhận' | 'Đang giao' | 'Đã hoàn thành';
   totalAmount: number;
@@ -25,22 +26,24 @@ export default function OrderHistoryPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const authState = getAuthState();
-    if (!authState.isLoggedIn) {
+    if (!authState.isLoggedIn || !authState.user) {
       setIsAuthenticated(false);
       setLoading(false);
       return;
     }
 
     setIsAuthenticated(true);
+    setUserName(authState.user.name);
     initializeMockOrders();
-    const allOrders = getOrders();
-    setOrders(allOrders);
+    const userOrders = getOrdersByUserId(authState.user.id);
+    setOrders(userOrders);
 
-    if (allOrders.length > 0) {
-      setSelectedOrderId(allOrders[0].orderId);
+    if (userOrders.length > 0) {
+      setSelectedOrderId(userOrders[0].orderId);
     }
 
     setLoading(false);
@@ -69,7 +72,7 @@ export default function OrderHistoryPage() {
             Bạn cần đăng nhập để xem lịch sử đơn hàng của mình
           </p>
           <button
-            onClick={() => router.push('/auth')}
+            onClick={() => router.push('/login')}
             className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105"
           >
             Đăng Nhập Ngay

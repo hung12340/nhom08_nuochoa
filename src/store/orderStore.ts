@@ -1,5 +1,4 @@
 export interface OrderItem {
-  productId: string;
   name: string;
   quantity: number;
   price: number;
@@ -7,6 +6,7 @@ export interface OrderItem {
 
 export interface Order {
   orderId: string;
+  userId: string;
   purchaseDate: string;
   status: 'Chờ xác nhận' | 'Đang giao' | 'Đã hoàn thành';
   totalAmount: number;
@@ -16,6 +16,99 @@ export interface Order {
 export interface OrderState {
   orders: Order[];
 }
+
+// Mock orders database
+const MOCK_ORDERS: Order[] = [
+  {
+    orderId: 'ORD001',
+    userId: 'user1',
+    purchaseDate: '2024-04-10',
+    status: 'Đã hoàn thành',
+    totalAmount: 450000,
+    items: [
+      {
+        name: 'Tinh dầu Hoa Hồng Premium',
+        quantity: 2,
+        price: 225000,
+      },
+    ],
+  },
+  {
+    orderId: 'ORD002',
+    userId: 'user1',
+    purchaseDate: '2024-04-12',
+    status: 'Đang giao',
+    totalAmount: 350000,
+    items: [
+      {
+        name: 'Tinh dầu Hoa Cúc Chamomile',
+        quantity: 1,
+        price: 350000,
+      },
+    ],
+  },
+  {
+    orderId: 'ORD003',
+    userId: 'user1',
+    purchaseDate: '2024-04-14',
+    status: 'Chờ xác nhận',
+    totalAmount: 280000,
+    items: [
+      {
+        name: 'Tinh dầu Bạc Hà',
+        quantity: 1,
+        price: 280000,
+      },
+    ],
+  },
+  {
+    orderId: 'ORD004',
+    userId: 'user2',
+    purchaseDate: '2024-04-09',
+    status: 'Đã hoàn thành',
+    totalAmount: 520000,
+    items: [
+      {
+        name: 'Tinh dầu Hoa Hồng Premium',
+        quantity: 1,
+        price: 350000,
+      },
+      {
+        name: 'Tinh dầu Bạc Hà',
+        quantity: 1,
+        price: 170000,
+      },
+    ],
+  },
+  {
+    orderId: 'ORD005',
+    userId: 'user2',
+    purchaseDate: '2024-04-13',
+    status: 'Đang giao',
+    totalAmount: 400000,
+    items: [
+      {
+        name: 'Tinh dầu Hoa Cúc Chamomile',
+        quantity: 1,
+        price: 400000,
+      },
+    ],
+  },
+  {
+    orderId: 'ORD006',
+    userId: 'user3',
+    purchaseDate: '2024-04-11',
+    status: 'Đã hoàn thành',
+    totalAmount: 600000,
+    items: [
+      {
+        name: 'Bộ tinh dầu Aromis 3 lọ',
+        quantity: 1,
+        price: 600000,
+      },
+    ],
+  },
+];
 
 // Get orders from localStorage
 export const getOrders = (): Order[] => {
@@ -33,6 +126,12 @@ export const getOrders = (): Order[] => {
   }
 
   return [];
+};
+
+// Get orders by userId
+export const getOrdersByUserId = (userId: string): Order[] => {
+  const orders = getOrders();
+  return orders.filter((order) => order.userId === userId);
 };
 
 // Save orders to localStorage
@@ -70,57 +169,13 @@ export const getOrderById = (orderId: string): Order | undefined => {
 
 // Generate order ID
 export const generateOrderId = (): string => {
-  return `ARM-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+  return `ORD-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 };
 
 // Create initial mock orders for demo
 export const initializeMockOrders = (): void => {
   const orders = getOrders();
   if (orders.length === 0) {
-    const mockOrders: Order[] = [
-      {
-        orderId: 'ARM-001',
-        purchaseDate: '2026-04-12',
-        status: 'Đã hoàn thành',
-        totalAmount: 9000000,
-        items: [
-          {
-            productId: '1',
-            name: 'Bleu de Chanel',
-            quantity: 2,
-            price: 4500000,
-          },
-        ],
-      },
-      {
-        orderId: 'ARM-002',
-        purchaseDate: '2026-04-10',
-        status: 'Đang giao',
-        totalAmount: 3480000,
-        items: [
-          {
-            productId: '2',
-            name: 'Dior Sauvage EDP',
-            quantity: 1,
-            price: 3480000,
-          },
-        ],
-      },
-      {
-        orderId: 'ARM-003',
-        purchaseDate: '2026-04-05',
-        status: 'Chờ xác nhận',
-        totalAmount: 7960000,
-        items: [
-          {
-            productId: '4',
-            name: 'Dior Jadore EDP',
-            quantity: 2,
-            price: 3980000,
-          },
-        ],
-      },
-    ];
-    saveOrders(mockOrders);
+    saveOrders(MOCK_ORDERS);
   }
 };

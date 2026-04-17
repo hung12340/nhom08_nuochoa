@@ -169,9 +169,9 @@ export default function ContactPage() {
             <div className="text-5xl mb-4">📍</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Địa Chỉ</h3>
             <p className="text-gray-600">
-              123 Ngô Tất Tố
+              Số 1 Võ Văn Ngân
               <br />
-              Hà Nội, Việt Nam
+              Thành Phố Hồ Chí Minh, Việt Nam
             </p>
           </div>
         </div>

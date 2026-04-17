@@ -1,107 +1,40 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { login, register } from '@/store/authStore';
 
-export default function AuthPage() {
+export default function AuthRedirect() {
   const router = useRouter();
-  const [mode, setMode] = useState<'login' | 'register'>('login');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    rememberMe: false,
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: '',
-      });
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.email) {
-      newErrors.email = 'Email là bắt buộc';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email không hợp lệ';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Mật khẩu là bắt buộc';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Mật khẩu phải có ít nhất 6 ký tự';
-    }
-
-    if (mode === 'register') {
-      if (!formData.name) {
-        newErrors.name = 'Họ tên là bắt buộc';
-      }
-      if (!formData.confirmPassword) {
-        newErrors.confirmPassword = 'Xác nhận mật khẩu là bắt buộc';
-      } else if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Mật khẩu không trùng khớp';
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
-
-    setLoading(true);
-    try {
-      if (mode === 'login') {
-        await login(formData.email, formData.password, formData.name);
-        setSuccess(true);
-        setTimeout(() => {
-          router.push('/');
-        }, 1500);
-      } else {
-        await register(formData.email, formData.password, formData.name);
-        setSuccess(true);
-        setTimeout(() => {
-          setMode('login');
-          setFormData({
-            name: '',
-            email: formData.email,
-            password: '',
-            confirmPassword: '',
-            rememberMe: false,
-          });
-          setSuccess(false);
-        }, 1500);
-      }
-    } catch (error) {
-      console.error('Auth error:', error);
-      setErrors({
-        general: error instanceof Error ? error.message : 'Đã có lỗi xảy ra',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    router.push('/login');
+  }, [router]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center">
+      <p>Chuyển hướng đến trang đăng nhập...</p>
+    </div>
+  );
+}
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function AuthRedirect() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/login');
+  }, [router]);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p>Chuyển hướng đến trang đăng nhập...</p>
+    </div>
+  );
+}
+
       <style>{`
         @keyframes fadeIn {
           from {

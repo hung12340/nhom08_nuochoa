@@ -1,0 +1,26 @@
+[
+  {
+    "id": "user1",
+    "email": "nguyenvana@gmail.com",
+    "password": "123456",
+    "name": "Nguyễn Văn A",
+    "phone": "0901234567",
+    "address": "Số 1 Võ Văn Ngân, Thành Phố Hồ Chí Minh"
+  },
+  {
+    "id": "user2",
+    "email": "tranthib@gmail.com",
+    "password": "123456",
+    "name": "Trần Thị B",
+    "phone": "0912345678",
+    "address": "Số 1 Võ Văn Ngân, Thành Phố Hồ Chí Minh"
+  },
+  {
+    "id": "user3",
+    "email": "phamvanc@gmail.com",
+    "password": "123456",
+    "name": "Phạm Văn C",
+    "phone": "0923456789",
+    "address": "Số 1 Võ Văn Ngân, Thành Phố Hồ Chí Minh"
+  }
+]
