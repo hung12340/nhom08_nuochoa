@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F9F9F9] px-6">
+    <div className="min-h-screen flex items-center justify-center bg-[#F9F9F9] px-6 font-sans">
 
       <div className="text-center max-w-md">
 
@@ -24,7 +24,7 @@ export default function NotFound() {
         </h1>
 
         {/* MESSAGE */}
-        <p className="text-gray-600 text-lg mb-6 leading-7">
+        <p className="text-[#1A1A1A]/70 text-lg mb-6 leading-7 font-sans">
           Trang bạn tìm không tồn tại. <br />
           Có thể nó đã được di chuyển hoặc không còn khả dụng.
         </p>
@@ -32,11 +32,11 @@ export default function NotFound() {
         {/* BUTTON */}
         <Link
           href="/"
-          className="inline-block bg-black text-white px-8 py-3 rounded-full font-medium
-          transition-all duration-300
-          hover:bg-[#D4AF37] hover:text-black
-          hover:-translate-y-1 hover:shadow-2xl
-          active:translate-y-0 active:shadow-md"
+          className="inline-block bg-[#1A1A1A] text-[#F9F9F9] px-8 py-3 rounded-full font-medium
+                     transition-all duration-300
+                     hover:bg-[#D4AF37] hover:text-[#1A1A1A]
+                     hover:-translate-y-1 hover:shadow-lg
+                     active:translate-y-0 active:shadow-md font-sans"
         >
           ← Quay về trang chủ
         </Link>
