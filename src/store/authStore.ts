@@ -11,24 +11,24 @@ export interface AuthState {
 }
 
 // Mock users database
-const MOCK_USERS = [
+let MOCK_USERS = [
   {
     id: 'user1',
     email: 'nguyenvana@gmail.com',
     password: '123456',
-    name: 'Nguyễn Văn A',
+    name: 'Nguy?n V�n A',
   },
   {
     id: 'user2',
     email: 'tranthib@gmail.com',
     password: '123456',
-    name: 'Trần Thị B',
+    name: 'Tr?n Th? B',
   },
   {
     id: 'user3',
     email: 'phamvanc@gmail.com',
     password: '123456',
-    name: 'Phạm Văn C',
+    name: 'Ph?m V�n C',
   },
 ];
 
@@ -63,29 +63,29 @@ export const saveAuthState = (state: AuthState): void => {
   }
 };
 
-// Login function - kiểm tra từ users.json
+// Login function - ki?m tra t? users.json
 export const login = async (
   email: string,
   password: string
 ): Promise<User> => {
   if (!validateEmail(email)) {
-    throw new Error('Email không hợp lệ');
+    throw new Error('Email kh�ng h?p l?');
   }
 
   if (password.length < 6) {
-    throw new Error('Mật khẩu phải có ít nhất 6 ký tự');
+    throw new Error('M?t kh?u ph?i c� �t nh?t 6 k? t?');
   }
 
   // Simulate API call
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  // Kiểm tra user từ MOCK_USERS
+  // Ki?m tra user t? MOCK_USERS
   const foundUser = MOCK_USERS.find(
     (u) => u.email === email && u.password === password
   );
 
   if (!foundUser) {
-    throw new Error('Email hoặc mật khẩu không đúng');
+    throw new Error('Email ho?c m?t kh?u kh�ng ��ng');
   }
 
   const user: User = {
@@ -104,30 +104,58 @@ export const login = async (
   return user;
 };
 
-// Register function - không cho phép đăng ký, chỉ những tài khoản trong users.json
+// Register function - cho ph�p ��ng k? ng�?i d�ng m?i
 export const register = async (
   email: string,
   password: string,
   name: string
 ): Promise<User> => {
   if (!validateEmail(email)) {
-    throw new Error('Email không hợp lệ');
+    throw new Error('Email kh�ng h?p l?');
   }
 
   if (password.length < 6) {
-    throw new Error('Mật khẩu phải có ít nhất 6 ký tự');
+    throw new Error('M?t kh?u ph?i c� �t nh?t 6 k? t?');
   }
 
   if (!name.trim()) {
-    throw new Error('Vui lòng nhập họ và tên');
+    throw new Error('Vui l?ng nh?p h? v� t�n');
   }
 
   // Simulate API call
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  throw new Error(
-    'Tính năng đăng ký chưa được hỗ trợ. Vui lòng liên hệ quản trị viên.'
-  );
+  // Check if email already exists
+  const existingUser = MOCK_USERS.find((u) => u.email === email);
+  if (existingUser) {
+    throw new Error('Email n�y �? ��?c ��ng k?');
+  }
+
+  // Create new user
+  const newUser: User & { password: string } = {
+    id: `user${MOCK_USERS.length + 1}`,
+    email,
+    password,
+    name,
+  };
+
+  // Add to mock database
+  MOCK_USERS.push(newUser);
+
+  const user: User = {
+    id: newUser.id,
+    email: newUser.email,
+    name: newUser.name,
+  };
+
+  const state: AuthState = {
+    user,
+    isLoggedIn: true,
+    rememberMe: false,
+  };
+
+  saveAuthState(state);
+  return user;
 };
 
 // Logout function
