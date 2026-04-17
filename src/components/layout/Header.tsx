@@ -5,7 +5,7 @@ import { BASE_PATH } from '@/lib/constants';
 export default function Header() {
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-sm font-sans transition-all duration-300">
-      <div className="bg-amber-900 text-amber-100 text-[10px] md:text-xs py-2 text-center tracking-widest uppercase font-medium">
+      <div className="bg-[#1A1A1A] text-[#D4AF37] text-[10px] md:text-xs py-2 text-center tracking-widest uppercase font-medium">
         Miễn phí vận chuyển toàn quốc cho đơn hàng từ 2.000.000 VNĐ
       </div>
 
