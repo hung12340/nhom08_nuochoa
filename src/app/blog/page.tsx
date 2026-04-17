@@ -13,7 +13,7 @@ export default function BlogPage() {
         </h1>
 
         {/* LINE */}
-        <div className="w-16 h-[1.5px] bg-[#D4AF37] mx-auto mb-14 opacity-90"></div>
+        <div className="w-16 h-[2px] bg-[#D4AF37] mx-auto mb-14 opacity-90"></div>
 
         {/* GRID */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -24,10 +24,16 @@ export default function BlogPage() {
               href={`/blog/${blog.id}`}
               className="group block"
             >
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col border border-[#1A1A1A]/5">
+              <div className="bg-white rounded-2xl overflow-hidden
+                              shadow-sm hover:shadow-xl
+                              transition-all duration-500
+                              hover:-translate-y-2
+                              h-full flex flex-col
+                              border border-[#1A1A1A]/5">
 
                 {/* IMAGE */}
                 <div className="relative w-full h-56 overflow-hidden">
+
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-500 z-10" />
 
                   <Image
@@ -41,18 +47,18 @@ export default function BlogPage() {
                 {/* CONTENT */}
                 <div className="p-6 flex flex-col flex-1">
 
-                  <h2 className="text-lg font-semibold text-[#1A1A1A] mb-2 font-serif group-hover:text-[#D4AF37] transition duration-300">
+                  <h2 className="text-lg font-serif font-semibold text-[#1A1A1A] mb-2 group-hover:text-[#D4AF37] transition duration-300">
                     {blog.title}
                   </h2>
 
-                  <p className="text-[#1A1A1A]/70 text-sm leading-6 font-sans line-clamp-3">
+                  <p className="text-[#1A1A1A]/75 text-sm leading-6 font-sans line-clamp-3">
                     {blog.excerpt}
                   </p>
 
                   {/* READ MORE */}
-                  <div className="mt-auto pt-4 flex items-center gap-2 text-sm font-medium tracking-wide text-[#1A1A1A]">
+                  <div className="mt-auto pt-4 flex items-center gap-2 text-sm font-medium tracking-wide text-[#1A1A1A] font-sans">
 
-                    <span className="group-hover:text-[#D4AF37] transition font-sans">
+                    <span className="group-hover:text-[#D4AF37] transition">
                       Đọc thêm
                     </span>
 
