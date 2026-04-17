@@ -315,17 +315,19 @@ export default function RegisterPage() {
               type="button"
               onClick={handleGoogleRegister}
               disabled={oauthLoading !== null}
-              className="w-full bg-white border border-amber-200 text-amber-900 font-medium py-2 px-4 rounded-lg hover:bg-amber-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-white border border-amber-200 text-amber-900 font-medium py-2 px-4 rounded-lg hover:bg-amber-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {oauthLoading === 'google' ? 'Đang xử lý...' : 'Google'}
+              <span className="text-lg">🔵</span>
+              {oauthLoading === 'google' ? 'Xử lý...' : 'Google'}
             </button>
             <button
               type="button"
               onClick={handleGitHubRegister}
               disabled={oauthLoading !== null}
-              className="w-full bg-white border border-amber-200 text-amber-900 font-medium py-2 px-4 rounded-lg hover:bg-amber-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-white border border-amber-200 text-amber-900 font-medium py-2 px-4 rounded-lg hover:bg-amber-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {oauthLoading === 'github' ? 'Đang xử lý...' : 'GitHub'}
+              <span className="text-lg">⚫</span>
+              {oauthLoading === 'github' ? 'Xử lý...' : 'GitHub'}
             </button>
           </div>
         </div>
