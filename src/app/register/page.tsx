@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { register } from '@/store/authStore';
+import { signInWithGoogle, signInWithGitHub } from '@/lib/oauth';
 import Link from 'next/link';
 
 export default function RegisterPage() {
@@ -16,6 +17,7 @@ export default function RegisterPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOAuthLoading] = useState<'google' | 'github' | null>(null);
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +88,42 @@ export default function RegisterPage() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    setOAuthLoading('google');
+    try {
+      await signInWithGoogle();
+      setSuccess(true);
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
+    } catch (error) {
+      console.error('Google register error:', error);
+      setErrors({
+        general: 'Đăng ký Google thất bại',
+      });
+    } finally {
+      setOAuthLoading(null);
+    }
+  };
+
+  const handleGitHubRegister = async () => {
+    setOAuthLoading('github');
+    try {
+      await signInWithGitHub();
+      setSuccess(true);
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
+    } catch (error) {
+      console.error('GitHub register error:', error);
+      setErrors({
+        general: 'Đăng ký GitHub thất bại',
+      });
+    } finally {
+      setOAuthLoading(null);
     }
   };
 
@@ -275,17 +313,19 @@ export default function RegisterPage() {
           <div className="mt-6 grid grid-cols-2 gap-3">
             <button
               type="button"
-              disabled
+              onClick={handleGoogleRegister}
+              disabled={oauthLoading !== null}
               className="w-full bg-white border border-amber-200 text-amber-900 font-medium py-2 px-4 rounded-lg hover:bg-amber-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Google
+              {oauthLoading === 'google' ? 'Đang xử lý...' : 'Google'}
             </button>
             <button
               type="button"
-              disabled
+              onClick={handleGitHubRegister}
+              disabled={oauthLoading !== null}
               className="w-full bg-white border border-amber-200 text-amber-900 font-medium py-2 px-4 rounded-lg hover:bg-amber-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              GitHub
+              {oauthLoading === 'github' ? 'Đang xử lý...' : 'GitHub'}
             </button>
           </div>
         </div>
