@@ -25,7 +25,7 @@ export default async function BlogDetail({ params }) {
 
       <div className="max-w-5xl mx-auto">
 
-        {/* BACK BUTTON (GIỮ BÊN TRÁI) */}
+        {/* BACK BUTTON */}
         <Link
           href="/blog"
           className="inline-flex items-center gap-2 mb-10 px-6 py-2.5 
