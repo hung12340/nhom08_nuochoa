@@ -25,24 +25,28 @@ export default function Header() {
           </div>
 
           <nav className="hidden md:flex space-x-10">
-            <Link href="/" className="text-sm font-semibold text-amber-900 uppercase tracking-wider hover:text-amber-600 transition-colors relative group">
+            <Link href="/" className="text-sm font-semibold text-amber-900 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Trang chủ
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/products" className="text-sm font-medium text-gray-600 uppercase tracking-wider hover:text-amber-600 transition-colors relative group">
-              Sản phẩm
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
+            <Link href="/products?gender=nam" className="text-sm font-medium text-gray-600 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Nam
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/contact" className="text-sm font-medium text-gray-600 uppercase tracking-wider hover:text-amber-600 transition-colors relative group">
-              Liên Hệ
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
+            <Link href="/products?gender=nu" className="text-sm font-medium text-gray-600 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Nữ
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link href="/brands" className="text-sm font-medium text-gray-600 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Thương Hiệu
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
           </nav>
 
           <div className="flex items-center space-x-4 md:space-x-6 text-amber-900">
             <Link 
               href="/order-history" 
-              className="text-sm font-medium text-gray-600 hover:text-amber-600 transition-colors"
+              className="text-sm font-medium text-gray-600 hover:text-[#D4AF37] transition-colors"
             >
               Lịch sử đơn hàng
             </Link>
