@@ -15,6 +15,7 @@ export default function NotFound() {
             width={180}
             height={180}
             className="opacity-80"
+            priority
           />
         </div>
 
