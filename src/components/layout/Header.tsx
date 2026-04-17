@@ -25,7 +25,7 @@ export default function Header() {
           </div>
 
           <nav className="hidden md:flex space-x-10">
-            <Link href="/" className="text-sm font-semibold text-amber-900 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+            <Link href="/" className="text-sm font-bold text-[#78350f] uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Trang chủ
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
