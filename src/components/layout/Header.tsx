@@ -5,7 +5,7 @@ import { BASE_PATH } from '@/lib/constants';
 export default function Header() {
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-sm font-sans transition-all duration-300">
-      <div className="bg-amber-900 text-amber-100 text-[10px] md:text-xs py-2 text-center tracking-widest uppercase font-medium">
+      <div className="bg-[#1A1A1A] text-[#D4AF37] text-[10px] md:text-xs py-2 text-center tracking-widest uppercase font-medium">
         Miễn phí vận chuyển toàn quốc cho đơn hàng từ 2.000.000 VNĐ
       </div>
 
@@ -25,43 +25,43 @@ export default function Header() {
           </div>
 
           <nav className="hidden md:flex space-x-10">
-            <Link href="/" className="text-sm font-semibold text-amber-900 uppercase tracking-wider hover:text-amber-600 transition-colors relative group">
+            <Link href="/" className="text-sm font-semibold text-[#1A1A1A] uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Trang chủ
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/products" className="text-sm font-medium text-gray-600 uppercase tracking-wider hover:text-amber-600 transition-colors relative group">
+            <Link href="/products" className="text-sm font-medium text-[#1A1A1A]/70 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Sản phẩm
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/contact" className="text-sm font-medium text-gray-600 uppercase tracking-wider hover:text-amber-600 transition-colors relative group">
+            <Link href="/contact" className="text-sm font-medium text-[#1A1A1A]/70 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Liên Hệ
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
           </nav>
 
-          <div className="flex items-center space-x-4 md:space-x-6 text-amber-900">
+          <div className="flex items-center space-x-4 md:space-x-6 text-[#1A1A1A]">
             <Link 
               href="/order-history" 
-              className="text-sm font-medium text-gray-600 hover:text-amber-600 transition-colors"
+              className="text-sm font-medium text-[#1A1A1A]/70 hover:text-[#D4AF37] transition-colors"
             >
               Lịch sử đơn hàng
             </Link>
             
             <Link 
               href="/login" 
-              className="px-4 py-2 text-sm font-semibold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-white bg-[#D4AF37] hover:bg-[#c9a432] rounded-lg transition-colors"
             >
               Đăng Nhập
             </Link>
 
             <Link 
               href="/register" 
-              className="px-4 py-2 text-sm font-semibold text-amber-600 border-2 border-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-[#D4AF37] border-2 border-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-lg transition-colors"
             >
               Đăng Ký
             </Link>
 
-            <button className="md:hidden hover:text-amber-600 transition-colors">
+            <button className="md:hidden text-[#1A1A1A] hover:text-[#D4AF37] transition-colors">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
