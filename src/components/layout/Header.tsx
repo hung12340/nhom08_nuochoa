@@ -43,7 +43,7 @@ export default function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center space-x-4 md:space-x-6 text-amber-900">
+          <div className="flex items-center space-x-4 md:space-x-6 text-[#1A1A1A]">
             <Link 
               href="/order-history" 
               className="text-sm font-medium text-gray-600 hover:text-[#D4AF37] transition-colors"
@@ -53,19 +53,19 @@ export default function Header() {
             
             <Link 
               href="/login" 
-              className="px-4 py-2 text-sm font-semibold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-white bg-[#D4AF37] hover:bg-[#b8962f] rounded-lg transition-colors"
             >
               Đăng Nhập
             </Link>
 
             <Link 
               href="/register" 
-              className="px-4 py-2 text-sm font-semibold text-amber-600 border-2 border-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-[#D4AF37] border-2 border-[#D4AF37] hover:bg-[#F9F9F9] rounded-lg transition-colors"
             >
               Đăng Ký
             </Link>
 
-            <button className="md:hidden hover:text-amber-600 transition-colors">
+            <button className="md:hidden hover:text-[#D4AF37] transition-colors">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
