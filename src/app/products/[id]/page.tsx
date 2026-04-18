@@ -14,22 +14,129 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   if (!product) notFound();
 
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: '#f9f9f9', padding: '2rem 1.5rem' }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        {/* ========== GALLERY ẢNH CHẤT LƯỢNG CAO ========== */}
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <ProductGallery images={product.images} name={product.name} />
+    <main style={{ minHeight: '100vh', backgroundColor: '#f9f9f9', fontFamily: '"Montserrat", sans-serif' }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '2rem 1.5rem' }}>
+        
+        {/* Breadcrumb đơn giản */}
+        <div style={{ marginBottom: '2rem', fontSize: '0.9rem', color: '#888' }}>
+          <a href="/" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Trang chủ</a> /{' '}
+          <a href="/products" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Sản phẩm</a> /{' '}
+          <span style={{ color: '#d4af37' }}>{product.name}</span>
         </div>
 
-        {/* Thông tin cơ bản (chỉ để trang không trống) */}
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <h1 style={{ fontFamily: '"Playfair Display", serif', fontSize: '2rem', color: '#1a1a1a' }}>
-            {product.name}
-          </h1>
-          <p style={{ color: '#888', marginTop: '0.5rem' }}>{product.brand}</p>
-          <p style={{ fontSize: '1.5rem', color: '#d4af37', marginTop: '1rem' }}>
-            {product.price.toLocaleString('vi-VN')} ₫
-          </p>
+        {/* Bố cục 2 cột: Gallery | Mô tả */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem' }}>
+          
+          {/* CỘT TRÁI: GALLERY ẢNH CHẤT LƯỢNG CAO */}
+          <div style={{ flex: '1 1 45%', minWidth: '300px' }}>
+            <ProductGallery images={product.images} name={product.name} />
+          </div>
+
+          {/* CỘT PHẢI: MÔ TẢ SẢN PHẨM */}
+          <div style={{ flex: '1 1 45%', minWidth: '300px' }}>
+            <div style={{
+              backgroundColor: '#fff',
+              borderRadius: '24px',
+              padding: '2rem',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.02)',
+              border: '1px solid rgba(212,175,55,0.1)',
+            }}>
+              
+              {/* Thương hiệu & Tên */}
+              <div style={{
+                fontSize: '0.8rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                color: '#888',
+                marginBottom: '0.5rem'
+              }}>
+                {product.brand}
+              </div>
+              
+              <h1 style={{
+                fontFamily: '"Playfair Display", serif',
+                fontSize: '2.5rem',
+                color: '#1a1a1a',
+                lineHeight: 1.2,
+                marginBottom: '1rem'
+              }}>
+                {product.name}
+              </h1>
+
+              {/* Giá */}
+              <div style={{
+                fontSize: '2rem',
+                fontWeight: 600,
+                color: '#d4af37',
+                marginBottom: '2rem'
+              }}>
+                {product.price.toLocaleString('vi-VN')} ₫
+              </div>
+
+              {/* Thông tin nhanh */}
+              <div style={{ marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', marginBottom: '0.5rem' }}>
+                  <span style={{ width: '100px', fontWeight: 500, color: '#1a1a1a' }}>Dung tích</span>
+                  <span style={{ color: '#444' }}>{product.volume}</span>
+                </div>
+                <div style={{ display: 'flex', marginBottom: '0.5rem' }}>
+                  <span style={{ width: '100px', fontWeight: 500, color: '#1a1a1a' }}>Giới tính</span>
+                  <span style={{ color: '#444' }}>{product.gender}</span>
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <span style={{ width: '100px', fontWeight: 500, color: '#1a1a1a' }}>Tình trạng</span>
+                  <span style={{ color: product.stock > 0 ? '#2e7d32' : '#c62828', fontWeight: 500 }}>
+                    {product.stock > 0 ? `Còn hàng (${product.stock})` : 'Hết hàng'}
+                  </span>
+                </div>
+              </div>
+
+              {/* MÔ TẢ CHI TIẾT */}
+              <div style={{
+                borderTop: '1px solid rgba(0,0,0,0.05)',
+                paddingTop: '1.5rem'
+              }}>
+                <h2 style={{
+                  fontFamily: '"Playfair Display", serif',
+                  fontSize: '1.5rem',
+                  color: '#1a1a1a',
+                  marginBottom: '1rem',
+                  position: 'relative',
+                  display: 'inline-block'
+                }}>
+                  Mô tả sản phẩm
+                  <span style={{
+                    position: 'absolute',
+                    bottom: '-6px',
+                    left: 0,
+                    width: '60%',
+                    height: '2px',
+                    backgroundColor: '#d4af37'
+                  }} />
+                </h2>
+                
+                <p style={{
+                  fontFamily: '"Montserrat", sans-serif',
+                  fontSize: '1rem',
+                  lineHeight: 1.8,
+                  color: '#444',
+                  marginTop: '1.5rem'
+                }}>
+                  {product.description}
+                </p>
+
+                {/* Ghi chú */}
+                <p style={{
+                  marginTop: '1.5rem',
+                  fontSize: '0.9rem',
+                  color: '#888',
+                  fontStyle: 'italic'
+                }}>
+                  * Sản phẩm chính hãng 100%. Mùi hương có thể thay đổi tùy theo cơ địa.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
