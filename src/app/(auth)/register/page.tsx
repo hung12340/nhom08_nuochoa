@@ -3,7 +3,7 @@ import AuthForm from "@/components/ui/AuthForm";
 
 export const metadata: Metadata = {
   title: "Đăng ký | Aromis",
-  description: "Tạo tài khoản Aromis để lưu dữ liệu demo và sử dụng lịch sử đơn hàng trên website.",
+  description: "Tạo tài khoản Aromis với tên đăng nhập và mật khẩu để dùng ngay trong form đăng nhập.",
 };
 
 export default function RegisterPage() {

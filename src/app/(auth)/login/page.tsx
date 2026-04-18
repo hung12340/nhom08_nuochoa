@@ -3,7 +3,7 @@ import AuthForm from "@/components/ui/AuthForm";
 
 export const metadata: Metadata = {
   title: "Đăng nhập | Aromis",
-  description: "Đăng nhập tài khoản Aromis để xem lịch sử đơn hàng và tiếp tục trải nghiệm mua sắm.",
+  description: "Đăng nhập bằng tài khoản có sẵn hoặc bằng Google, GitHub thật để xem lịch sử đơn hàng tại Aromis.",
 };
 
 export default function LoginPage() {

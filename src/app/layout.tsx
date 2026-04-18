@@ -3,6 +3,7 @@ import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AuthSessionSync from "@/components/ui/AuthSessionSync";
 import Chatbot from "@/components/ui/Chatbot";
 
 const montserrat = Montserrat({
@@ -32,8 +33,9 @@ export default function RootLayout({
     >
       {/* Set màu nền, màu chữ và font mặc định cho toàn bộ website */}
       <body className="min-h-full flex flex-col bg-[#F9F9F9] text-[#1A1A1A] font-sans">
+          <AuthSessionSync />
           <Header />
-          <main className="flex-grow">
+          <main className="grow">
             {children}
           </main>
           <Footer />
