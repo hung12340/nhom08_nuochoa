@@ -1,3 +1,5 @@
+import productsData from "@/lib/data.json";
+
 export type SocialProvider = "google" | "github";
 export type AuthProvider = "credentials" | SocialProvider;
 
@@ -7,6 +9,43 @@ export type StoredUser = {
   createdAt: string;
   provider?: AuthProvider;
 };
+
+export type OrderStatus =
+  | "Chờ xác nhận"
+  | "Đang chuẩn bị"
+  | "Đang giao"
+  | "Đã hoàn thành";
+
+export type OrderHistoryItem = {
+  productId: string;
+  name: string;
+  quantity: number;
+  price: number;
+  image: string;
+  brand: string;
+  volume: string;
+};
+
+export type OrderHistory = {
+  orderId: string;
+  purchaseDate: string;
+  status: OrderStatus;
+  totalAmount: number;
+  items: OrderHistoryItem[];
+};
+
+type OrderHistoryMap = Record<string, OrderHistory[]>;
+
+type ProductRecord = {
+  id: string;
+  name: string;
+  brand: string;
+  price: number;
+  volume: string;
+  images: string[];
+};
+
+const products = productsData as ProductRecord[];
 
 const socialAuthAccounts: Record<SocialProvider, { email: string; password: string }> = {
   google: {
@@ -25,6 +64,7 @@ export const LOCAL_STORAGE_KEYS = {
   users: "aromis_users",
   rememberedEmail: "aromis_remembered_email",
   currentUser: "aromis_current_user",
+  orders: "aromis_order_history",
 } as const;
 
 function isBrowser() {
@@ -68,6 +108,28 @@ function writeStorage<T>(key: string, value: T) {
 
   window.localStorage.setItem(key, JSON.stringify(value));
   emitStorageChange();
+}
+
+function findProduct(productId: string) {
+  return products.find((product) => product.id === productId);
+}
+
+function buildOrderItem(productId: string, quantity: number): OrderHistoryItem {
+  const product = findProduct(productId);
+
+  return {
+    productId,
+    name: product?.name ?? "Sản phẩm Aromis",
+    quantity,
+    price: product?.price ?? 0,
+    image: product?.images[0] ?? "",
+    brand: product?.brand ?? "Aromis",
+    volume: product?.volume ?? "100ml",
+  };
+}
+
+function calculateOrderTotal(items: OrderHistoryItem[]) {
+  return items.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
 export function isValidEmail(email: string) {
@@ -186,4 +248,92 @@ export function clearCurrentUserEmail() {
 
   window.localStorage.removeItem(LOCAL_STORAGE_KEYS.currentUser);
   emitStorageChange();
+}
+
+const defaultOrderBlueprints = [
+  {
+    orderId: "ARM-999",
+    purchaseDate: "2026-04-12",
+    status: "Đã hoàn thành" as const,
+    items: [
+      { productId: "9", quantity: 1 },
+      { productId: "11", quantity: 1 },
+    ],
+  },
+  {
+    orderId: "ARM-1001",
+    purchaseDate: "2026-04-15",
+    status: "Đang giao" as const,
+    items: [{ productId: "3", quantity: 1 }],
+  },
+  {
+    orderId: "ARM-1002",
+    purchaseDate: "2026-04-18",
+    status: "Chờ xác nhận" as const,
+    items: [
+      { productId: "4", quantity: 1 },
+      { productId: "12", quantity: 1 },
+    ],
+  },
+];
+
+function createDefaultOrders() {
+  return defaultOrderBlueprints.map((order) => {
+    const items = order.items.map((item) => buildOrderItem(item.productId, item.quantity));
+
+    return {
+      orderId: order.orderId,
+      purchaseDate: order.purchaseDate,
+      status: order.status,
+      items,
+      totalAmount: calculateOrderTotal(items),
+    };
+  });
+}
+
+export function getOrderHistory(userEmail: string) {
+  const normalizedEmail = normalizeEmail(userEmail);
+  const orderHistoryMap = readStorage<OrderHistoryMap>(LOCAL_STORAGE_KEYS.orders, {});
+
+  return orderHistoryMap[normalizedEmail] ?? [];
+}
+
+export function ensureOrderHistory(userEmail: string) {
+  const normalizedEmail = normalizeEmail(userEmail);
+  const orderHistoryMap = readStorage<OrderHistoryMap>(LOCAL_STORAGE_KEYS.orders, {});
+  const existingOrders = orderHistoryMap[normalizedEmail];
+
+  if (existingOrders && existingOrders.length > 0) {
+    return existingOrders;
+  }
+
+  const nextOrders = createDefaultOrders();
+  writeStorage(LOCAL_STORAGE_KEYS.orders, {
+    ...orderHistoryMap,
+    [normalizedEmail]: nextOrders,
+  });
+  return nextOrders;
+}
+
+export function saveOrderHistory(userEmail: string, orders: OrderHistory[]) {
+  const normalizedEmail = normalizeEmail(userEmail);
+  const orderHistoryMap = readStorage<OrderHistoryMap>(LOCAL_STORAGE_KEYS.orders, {});
+
+  writeStorage(LOCAL_STORAGE_KEYS.orders, {
+    ...orderHistoryMap,
+    [normalizedEmail]: orders,
+  });
+}
+
+export function resetOrderHistory(userEmail: string) {
+  const normalizedEmail = normalizeEmail(userEmail);
+  const orderHistoryMap = readStorage<OrderHistoryMap>(LOCAL_STORAGE_KEYS.orders, {});
+  const nextOrders = createDefaultOrders();
+
+  writeStorage(LOCAL_STORAGE_KEYS.orders, {
+    ...orderHistoryMap,
+    [normalizedEmail]: nextOrders,
+  });
+
+  return nextOrders;
 }
