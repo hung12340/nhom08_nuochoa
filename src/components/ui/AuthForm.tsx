@@ -6,6 +6,7 @@ import { FormEvent, useState, useSyncExternalStore, useTransition } from "react"
 import {
   STORAGE_EVENT_NAME,
   authenticateStoredUser,
+  ensureOrderHistory,
   getRememberedEmail,
   getStoredUsers,
   isValidEmail,
@@ -150,10 +151,11 @@ export default function AuthForm({ mode }: AuthFormProps) {
       }
 
       setCurrentUserEmail(formValues.email);
-      setStatusMessage("Tạo tài khoản thành công. Aromis đang chuyển bạn về trang chủ.");
+      ensureOrderHistory(formValues.email);
+      setStatusMessage("Tạo tài khoản thành công. Aromis đang chuyển bạn tới lịch sử đơn hàng.");
 
       startTransition(() => {
-        router.push("/");
+        router.push("/orders");
       });
 
       return;
@@ -179,21 +181,23 @@ export default function AuthForm({ mode }: AuthFormProps) {
     }
 
     setCurrentUserEmail(authenticatedUser.email);
-    setStatusMessage("Đăng nhập thành công. Aromis đang chuyển bạn về trang chủ.");
+    ensureOrderHistory(authenticatedUser.email);
+    setStatusMessage("Đăng nhập thành công. Aromis đang mở lịch sử đơn hàng cho bạn.");
 
     startTransition(() => {
-      router.push("/");
+      router.push("/orders");
     });
   };
 
   const handleSocialSignIn = (provider: SocialProvider) => {
     setErrors({});
-    signInWithSocialProvider(provider);
+    const socialEmail = signInWithSocialProvider(provider);
 
-    setStatusMessage(`Đăng nhập thành công qua ${socialProviderLabels[provider]}. Aromis đang chuyển bạn về trang chủ.`);
+    ensureOrderHistory(socialEmail);
+    setStatusMessage(`Đăng nhập thành công qua ${socialProviderLabels[provider]}. Aromis đang chuyển bạn tới lịch sử đơn hàng.`);
 
     startTransition(() => {
-      router.push("/");
+      router.push("/orders");
     });
   };
 
