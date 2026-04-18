@@ -155,7 +155,7 @@ export default function ContactPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">Form liên hệ</p>
             <h2 className="mt-4 font-serif text-4xl">Gửi lời nhắn cho Aromis</h2>
             <p className="mt-4 text-sm leading-7 text-[#1A1A1A]/68 sm:text-base">
-              Họ tên, email và nội dung lời nhắn sẽ được kiểm tra hợp lệ. Nếu gửi thành công, dữ liệu sẽ được lưu ở localStorage.
+              Họ tên, email và nội dung lời nhắn sẽ được kiểm tra hợp lệ trước khi tiếp nhận để đảm bảo thông tin liên hệ rõ ràng và chính xác.
             </p>
 
             <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-5">
@@ -221,7 +221,7 @@ export default function ContactPage() {
 
               {isSubmitted ? (
                 <div className="border border-[#D4AF37]/45 bg-[#D4AF37]/10 px-4 py-3 text-sm text-[#7F5B00]">
-                  Aromis đã nhận lời nhắn của bạn. Dữ liệu đang được lưu ngay trên trình duyệt cho phần demo.
+                  Aromis đã tiếp nhận lời nhắn của bạn. Cảm ơn bạn đã dành thời gian kết nối cùng thương hiệu.
                 </div>
               ) : null}
 
