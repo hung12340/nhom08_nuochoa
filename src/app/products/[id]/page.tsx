@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getProductById, getAllProducts } from '@/lib/products';
 import ProductGallery from '@/components/ProductGallery';
+import AddToCartButton from '@/components/AddToCartButton';
 
 export async function generateStaticParams() {
   const products = getAllProducts();
@@ -17,22 +18,22 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <main style={{ minHeight: '100vh', backgroundColor: '#f9f9f9', fontFamily: '"Montserrat", sans-serif' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '2rem 1.5rem' }}>
         
-        {/* Breadcrumb đơn giản */}
+        {/* Breadcrumb */}
         <div style={{ marginBottom: '2rem', fontSize: '0.9rem', color: '#888' }}>
           <a href="/" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Trang chủ</a> /{' '}
           <a href="/products" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Sản phẩm</a> /{' '}
           <span style={{ color: '#d4af37' }}>{product.name}</span>
         </div>
 
-        {/* Bố cục 2 cột: Gallery | Mô tả */}
+        {/* Bố cục 2 cột: Gallery | Thông tin */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem' }}>
           
-          {/* CỘT TRÁI: GALLERY ẢNH CHẤT LƯỢNG CAO */}
+          {/* CỘT TRÁI: GALLERY */}
           <div style={{ flex: '1 1 45%', minWidth: '300px' }}>
             <ProductGallery images={product.images} name={product.name} />
           </div>
 
-          {/* CỘT PHẢI: MÔ TẢ SẢN PHẨM */}
+          {/* CỘT PHẢI: THÔNG TIN + NÚT MUA */}
           <div style={{ flex: '1 1 45%', minWidth: '300px' }}>
             <div style={{
               backgroundColor: '#fff',
@@ -42,7 +43,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               border: '1px solid rgba(212,175,55,0.1)',
             }}>
               
-              {/* Thương hiệu & Tên */}
+              {/* Thương hiệu */}
               <div style={{
                 fontSize: '0.8rem',
                 textTransform: 'uppercase',
@@ -53,6 +54,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 {product.brand}
               </div>
               
+              {/* Tên sản phẩm */}
               <h1 style={{
                 fontFamily: '"Playfair Display", serif',
                 fontSize: '2.5rem',
@@ -91,10 +93,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 </div>
               </div>
 
-              {/* MÔ TẢ CHI TIẾT */}
+              {/* MÔ TẢ SẢN PHẨM */}
               <div style={{
                 borderTop: '1px solid rgba(0,0,0,0.05)',
-                paddingTop: '1.5rem'
+                paddingTop: '1.5rem',
+                marginBottom: '2rem'
               }}>
                 <h2 style={{
                   fontFamily: '"Playfair Display", serif',
@@ -125,7 +128,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   {product.description}
                 </p>
 
-                {/* Ghi chú */}
                 <p style={{
                   marginTop: '1.5rem',
                   fontSize: '0.9rem',
@@ -135,6 +137,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   * Sản phẩm chính hãng 100%. Mùi hương có thể thay đổi tùy theo cơ địa.
                 </p>
               </div>
+
+              {/* NÚT THÊM VÀO GIỎ */}
+              <AddToCartButton product={product} />
             </div>
           </div>
         </div>
