@@ -1,38 +1,52 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useDeferredValue, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import OrderDetailPanel from "@/components/orders/OrderDetailPanel";
+import AccountAvatar from "@/components/ui/AccountAvatar";
+import { useCurrentAccount } from "@/hooks/useCurrentAccount";
 import {
-  STORAGE_EVENT_NAME,
-  clearCurrentUserEmail,
-  getCurrentUserEmail,
-  getOrderHistory,
-  OrderHistory,
-  resetOrderHistory,
-} from "@/lib/clientStorage";
+  getOrdersByUserId,
+  initializeOrderHistoryForUser,
+  subscribeToOrderHistoryStore,
+  type OrderHistoryRecord,
+  type OrderStatus,
+} from "@/lib/orderHistory";
 
-function subscribeToBrowserStore(onStoreChange: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
+type FilterKey = "all" | OrderStatus;
 
-  window.addEventListener("storage", onStoreChange);
-  window.addEventListener(STORAGE_EVENT_NAME, onStoreChange);
-
-  return () => {
-    window.removeEventListener("storage", onStoreChange);
-    window.removeEventListener(STORAGE_EVENT_NAME, onStoreChange);
-  };
-}
-
-const statusClasses: Record<OrderHistory["status"], string> = {
-  "Chờ xác nhận": "border-amber-200 bg-amber-50 text-amber-700",
-  "Đang chuẩn bị": "border-sky-200 bg-sky-50 text-sky-700",
-  "Đang giao": "border-violet-200 bg-violet-50 text-violet-700",
-  "Đã hoàn thành": "border-emerald-200 bg-emerald-50 text-emerald-700",
+const statusClasses: Record<OrderStatus, string> = {
+  "Cho xac nhan": "border-amber-200 bg-amber-50 text-amber-700",
+  "Dang chuan bi": "border-sky-200 bg-sky-50 text-sky-700",
+  "Dang giao": "border-violet-200 bg-violet-50 text-violet-700",
+  "Da hoan thanh": "border-emerald-200 bg-emerald-50 text-emerald-700",
 };
+
+const statusLabels: Record<OrderStatus, string> = {
+  "Cho xac nhan": "Chờ xác nhận",
+  "Dang chuan bi": "Đang chuẩn bị",
+  "Dang giao": "Đang giao",
+  "Da hoan thanh": "Đã hoàn thành",
+};
+
+const paymentStatusLabels = {
+  "Cho thanh toan": "Chờ thanh toán",
+  "Da thanh toan": "Đã thanh toán",
+} as const;
+
+const providerLabels = {
+  credentials: "Tài khoản nội bộ",
+  google: "Google",
+  github: "GitHub",
+} as const;
+
+const filterOptions: Array<{ key: FilterKey; label: string }> = [
+  { key: "all", label: "Tất cả" },
+  { key: "Cho xac nhan", label: "Chờ xác nhận" },
+  { key: "Dang chuan bi", label: "Đang chuẩn bị" },
+  { key: "Dang giao", label: "Đang giao" },
+  { key: "Da hoan thanh", label: "Đã hoàn thành" },
+];
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("vi-VN", {
@@ -50,69 +64,107 @@ function formatDate(dateString: string) {
   }).format(new Date(`${dateString}T12:00:00`));
 }
 
-function sortOrders(orders: OrderHistory[]) {
-  return [...orders].sort(
-    (left, right) =>
-      new Date(`${right.purchaseDate}T12:00:00`).getTime() - new Date(`${left.purchaseDate}T12:00:00`).getTime()
-  );
+function getStats(orders: OrderHistoryRecord[]) {
+  return {
+    totalOrders: orders.length,
+    totalSpent: orders.reduce((sum, order) => sum + order.totalAmount, 0),
+    activeOrders: orders.filter((order) => order.status !== "Da hoan thanh").length,
+  };
+}
+
+function getOrderUnitCount(order: OrderHistoryRecord) {
+  return order.items.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function getOrderSearchText(order: OrderHistoryRecord) {
+  return [
+    order.orderId,
+    order.paymentMethod,
+    order.shippingAddress,
+    order.shop.name,
+    order.shop.subtitle,
+    order.recipient.fullName,
+    order.fulfillment.providerName,
+    order.fulfillment.trackingCode,
+    ...order.items.flatMap((item) => [item.name, item.brand, item.volume]),
+  ]
+    .join(" ")
+    .toLowerCase();
 }
 
 export default function OrdersPage() {
-  const router = useRouter();
+  const currentAccount = useCurrentAccount();
+  const [selectedFilter, setSelectedFilter] = useState<FilterKey>("all");
   const [expandedOrderId, setExpandedOrderId] = useState("");
-  const userEmail = useSyncExternalStore(subscribeToBrowserStore, getCurrentUserEmail, () => "");
+  const [searchTerm, setSearchTerm] = useState("");
+  const deferredSearchTerm = useDeferredValue(searchTerm.trim().toLowerCase());
   const ordersSnapshot = useSyncExternalStore(
-    subscribeToBrowserStore,
-    () => (userEmail ? JSON.stringify(getOrderHistory(userEmail)) : "[]"),
+    subscribeToOrderHistoryStore,
+    () => (currentAccount ? JSON.stringify(getOrdersByUserId(currentAccount.id)) : "[]"),
     () => "[]"
   );
-  const orders = useMemo(() => sortOrders(JSON.parse(ordersSnapshot) as OrderHistory[]), [ordersSnapshot]);
+  const orders = useMemo(() => JSON.parse(ordersSnapshot) as OrderHistoryRecord[], [ordersSnapshot]);
+  const stats = getStats(orders);
 
-  const stats = useMemo(
-    () => ({
-      totalOrders: orders.length,
-      totalSpent: orders.reduce((sum, order) => sum + order.totalAmount, 0),
-      activeOrders: orders.filter((order) => order.status !== "Đã hoàn thành").length,
-    }),
-    [orders]
-  );
-
-  const handleResetOrders = () => {
-    if (!userEmail) {
+  useEffect(() => {
+    if (!currentAccount) {
       return;
     }
 
-    const nextOrders = sortOrders(resetOrderHistory(userEmail));
+    initializeOrderHistoryForUser(currentAccount.id);
+  }, [currentAccount]);
 
-    setExpandedOrderId(nextOrders[0]?.orderId ?? "");
+  const statusCounts = useMemo(
+    () =>
+      ({
+        all: orders.length,
+        "Cho xac nhan": orders.filter((order) => order.status === "Cho xac nhan").length,
+        "Dang chuan bi": orders.filter((order) => order.status === "Dang chuan bi").length,
+        "Dang giao": orders.filter((order) => order.status === "Dang giao").length,
+        "Da hoan thanh": orders.filter((order) => order.status === "Da hoan thanh").length,
+      }) as Record<FilterKey, number>,
+    [orders]
+  );
+
+  const filteredOrders = useMemo(() => {
+    const nextOrders = selectedFilter === "all" ? orders : orders.filter((order) => order.status === selectedFilter);
+
+    if (!deferredSearchTerm) {
+      return nextOrders;
+    }
+
+    return nextOrders.filter((order) => getOrderSearchText(order).includes(deferredSearchTerm));
+  }, [deferredSearchTerm, orders, selectedFilter]);
+
+  const activeOrderId = filteredOrders.some((order) => order.orderId === expandedOrderId)
+    ? expandedOrderId
+    : filteredOrders[0]?.orderId ?? "";
+
+  const resetFilters = () => {
+    setSelectedFilter("all");
+    setSearchTerm("");
   };
 
-  const handleLogout = () => {
-    clearCurrentUserEmail();
-    router.push("/login");
-  };
-
-  if (!userEmail) {
+  if (!currentAccount) {
     return (
-      <div className="min-h-screen bg-[#F9F9F9] px-6 py-20 sm:px-8 lg:px-12">
-        <div className="mx-auto max-w-3xl border border-[#1A1A1A]/8 bg-white p-8 text-center shadow-[0_24px_80px_rgba(26,26,26,0.08)] sm:p-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[#D4AF37]">Order history</p>
+      <div className="min-h-screen bg-[linear-gradient(180deg,#f9f9f9_0%,#f4efe2_100%)] px-6 py-20 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-3xl rounded-4xl border border-[#1A1A1A]/8 bg-white p-8 text-center shadow-[0_24px_80px_rgba(26,26,26,0.08)] sm:p-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[#D4AF37]">Đơn mua</p>
           <h1 className="mt-4 font-serif text-4xl text-[#1A1A1A] sm:text-5xl">Bạn cần đăng nhập để xem lịch sử đơn hàng</h1>
           <p className="mt-5 text-sm leading-7 text-[#1A1A1A]/68 sm:text-base">
-            Vì dự án không dùng backend thật, lịch sử đơn hàng sẽ được lưu theo tài khoản trên chính trình duyệt này. Hãy đăng
-            nhập hoặc tạo tài khoản để Aromis khởi tạo dữ liệu mẫu cho bạn.
+            Mọi đơn hàng sẽ được hiển thị theo đúng tài khoản đang đăng nhập, kèm trạng thái và chi tiết mua sắm rõ ràng.
           </p>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/login"
-              className="bg-[#1A1A1A] px-6 py-4 text-sm font-semibold uppercase tracking-[0.28em] text-white transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]"
+              className="rounded-full bg-[#1A1A1A] px-6 py-4 text-sm font-semibold uppercase tracking-[0.28em] text-white transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]"
             >
               Đăng nhập
             </Link>
             <Link
               href="/register"
-              className="border border-[#1A1A1A]/12 px-6 py-4 text-sm font-semibold uppercase tracking-[0.28em] text-[#1A1A1A] transition hover:border-[#D4AF37] hover:text-[#D4AF37]"
+              className="rounded-full border border-[#1A1A1A]/12 px-6 py-4 text-sm font-semibold uppercase tracking-[0.28em] text-[#1A1A1A] transition hover:border-[#D4AF37] hover:text-[#D4AF37]"
             >
               Tạo tài khoản
             </Link>
@@ -123,131 +175,230 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="bg-[#F9F9F9] px-6 py-16 text-[#1A1A1A] sm:px-8 lg:px-12">
+    <div className="bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.12),transparent_24%),linear-gradient(180deg,#f9f9f9_0%,#f4efe2_100%)] px-6 py-14 text-[#1A1A1A] sm:px-8 lg:px-12 lg:py-16">
       <div className="mx-auto max-w-6xl">
-        <section className="overflow-hidden border border-[#1A1A1A]/8 bg-white shadow-[0_24px_80px_rgba(26,26,26,0.08)]">
-          <div className="grid gap-8 px-6 py-8 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-10 lg:py-10">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-[#D4AF37]">Order archive</p>
-              <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">Lịch sử đơn hàng của bạn tại Aromis</h1>
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-[#1A1A1A]/68 sm:text-base">
-                Mỗi đơn hàng đều hiển thị ngày mua, trạng thái xử lý, chi tiết sản phẩm và tổng tiền rõ ràng. Toàn bộ dữ liệu đang
-                được lưu bằng localStorage trên trình duyệt hiện tại.
-              </p>
-              <p className="mt-4 text-sm text-[#1A1A1A]/58">
-                Tài khoản đang xem: <span className="font-semibold text-[#1A1A1A]">{userEmail}</span>
-              </p>
+        <section className="rounded-4xl border border-[#1A1A1A]/8 bg-white p-6 shadow-[0_24px_80px_rgba(26,26,26,0.08)] sm:p-8 lg:p-10">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-4">
+              <AccountAvatar name={currentAccount.displayName} avatarUrl={currentAccount.avatarUrl} size="lg" />
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">Aromis chính hãng</p>
+                <h1 className="mt-2 font-serif text-4xl leading-tight text-[#1A1A1A] sm:text-5xl">Đơn mua</h1>
+                <p className="mt-2 text-sm text-[#1A1A1A]/62">
+                  {currentAccount.displayName} • {providerLabels[currentAccount.provider]}
+                </p>
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-[#1A1A1A]/66 sm:text-base">
+                  Theo dõi trạng thái xử lý, mở chi tiết từng đơn và kiểm tra lại các chai nước hoa đã mua trong cùng một màn hình.
+                </p>
+              </div>
             </div>
 
-            <div className="grid gap-3 self-start sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-              <div className="border border-[#1A1A1A]/8 bg-[#FCFBF8] p-5">
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-3xl border border-[#1A1A1A]/8 bg-[#FCFBF8] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">Đơn hàng</p>
                 <p className="mt-3 font-serif text-3xl">{stats.totalOrders}</p>
               </div>
-              <div className="border border-[#1A1A1A]/8 bg-[#FCFBF8] p-5">
+              <div className="rounded-3xl border border-[#1A1A1A]/8 bg-[#FCFBF8] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">Đang xử lý</p>
                 <p className="mt-3 font-serif text-3xl">{stats.activeOrders}</p>
               </div>
-              <div className="border border-[#1A1A1A]/8 bg-[#FCFBF8] p-5">
+              <div className="rounded-3xl border border-[#1A1A1A]/8 bg-[#FCFBF8] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">Tổng chi</p>
                 <p className="mt-3 font-serif text-xl leading-tight">{formatCurrency(stats.totalSpent)}</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 border-t border-[#1A1A1A]/8 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
-            <p className="text-sm text-[#1A1A1A]/62">Bạn có thể mở chi tiết từng đơn hoặc khôi phục lại dữ liệu mẫu bất cứ lúc nào.</p>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={handleResetOrders}
-                className="border border-[#1A1A1A]/12 px-5 py-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#1A1A1A] transition hover:border-[#D4AF37] hover:text-[#D4AF37]"
-              >
-                Khôi phục dữ liệu mẫu
-              </button>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="bg-[#1A1A1A] px-5 py-3 text-sm font-semibold uppercase tracking-[0.24em] text-white transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]"
-              >
-                Đăng xuất
-              </button>
+          <div className="mt-8 grid gap-4 border-t border-[#1A1A1A]/8 pt-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <label className="flex items-center gap-3 rounded-3xl border border-[#1A1A1A]/10 bg-[#FCFBF8] px-4 py-3.5 text-sm text-[#1A1A1A]/62 transition focus-within:border-[#D4AF37] focus-within:bg-white">
+              <svg className="h-5 w-5 shrink-0 text-[#1A1A1A]/46" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Tìm theo mã đơn, mã vận đơn, tên sản phẩm hoặc tên người nhận"
+                className="w-full bg-transparent text-sm text-[#1A1A1A] outline-none placeholder:text-[#1A1A1A]/36"
+              />
+            </label>
+
+            <div className="flex flex-wrap gap-2">
+              {filterOptions.map((option) => (
+                <button
+                  key={option.key}
+                  type="button"
+                  onClick={() => setSelectedFilter(option.key)}
+                  className={`rounded-full px-4 py-2.5 text-sm font-semibold transition ${
+                    selectedFilter === option.key
+                      ? "bg-[#1A1A1A] text-white"
+                      : "border border-[#1A1A1A]/10 bg-white text-[#1A1A1A]/72 hover:border-[#D4AF37] hover:text-[#D4AF37]"
+                  }`}
+                >
+                  {option.label}
+                  <span className={`ml-2 inline-flex min-w-6 justify-center rounded-full px-1.5 py-0.5 text-xs ${selectedFilter === option.key ? "bg-white/16 text-white" : "bg-[#F4F1E8] text-[#1A1A1A]/62"}`}>
+                    {statusCounts[option.key]}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="mt-10 space-y-5">
-          {orders.map((order) => {
-            const isExpanded = expandedOrderId === order.orderId;
+        {filteredOrders.length > 0 ? (
+          <section className="mt-8 space-y-4">
+            {filteredOrders.map((order) => {
+              const isExpanded = activeOrderId === order.orderId;
+              const totalUnits = getOrderUnitCount(order);
+              const latestEvent = order.fulfillment.timeline[order.fulfillment.timeline.length - 1];
 
-            return (
-              <article
-                key={order.orderId}
-                className="overflow-hidden border border-[#1A1A1A]/8 bg-white shadow-[0_18px_50px_rgba(26,26,26,0.06)]"
-              >
-                <button
-                  type="button"
-                  onClick={() => setExpandedOrderId(isExpanded ? "" : order.orderId)}
-                  className="flex w-full flex-col gap-4 px-6 py-6 text-left transition hover:bg-[#FCFBF8] sm:px-8 lg:flex-row lg:items-center lg:justify-between"
+              return (
+                <article
+                  key={order.orderId}
+                  className="overflow-hidden rounded-4xl border border-[#1A1A1A]/8 bg-white shadow-[0_18px_50px_rgba(26,26,26,0.06)]"
                 >
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">{order.orderId}</p>
-                    <h2 className="mt-3 font-serif text-3xl">Đơn mua ngày {formatDate(order.purchaseDate)}</h2>
-                    <p className="mt-3 text-sm text-[#1A1A1A]/62">
-                      {order.items.length} sản phẩm • Tổng đơn {formatCurrency(order.totalAmount)}
-                    </p>
+                  <div className="flex flex-col gap-3 border-b border-[#1A1A1A]/8 px-5 py-4 sm:px-6 md:flex-row md:items-center md:justify-between">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="rounded-full bg-[#1A1A1A] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white">
+                        {order.shop.tag}
+                      </span>
+                      <p className="text-sm font-semibold text-[#1A1A1A]">{order.shop.name}</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#1A1A1A]/56">{order.orderId}</p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                      <p className="text-sm text-[#1A1A1A]/56">Ngày đặt: {formatDate(order.purchaseDate)}</p>
+                      <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusClasses[order.status]}`}>
+                        {statusLabels[order.status]}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3 lg:justify-end">
-                    <span className={`border px-4 py-2 text-sm font-semibold ${statusClasses[order.status]}`}>{order.status}</span>
-                    <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#1A1A1A]/56">
-                      {isExpanded ? "Thu gọn" : "Xem chi tiết"}
-                    </span>
-                  </div>
-                </button>
-
-                {isExpanded ? (
-                  <div className="border-t border-[#1A1A1A]/8 px-6 py-6 sm:px-8">
-                    <div className="grid gap-5 lg:grid-cols-2">
-                      {order.items.map((item) => (
-                        <div
-                          key={`${order.orderId}-${item.productId}`}
-                          className="grid gap-4 border border-[#1A1A1A]/8 bg-[#FCFBF8] p-4 sm:grid-cols-[120px_1fr]"
-                        >
-                          <div className="relative h-32 overflow-hidden border border-[#1A1A1A]/8 bg-white">
-                            {item.image ? (
-                              <Image src={item.image} alt={item.name} fill className="object-contain p-3" />
-                            ) : (
-                              <div className="flex h-full items-center justify-center text-sm text-[#1A1A1A]/40">No image</div>
-                            )}
-                          </div>
-
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">{item.brand}</p>
-                            <h3 className="mt-2 font-serif text-2xl leading-tight">{item.name}</h3>
-                            <p className="mt-2 text-sm text-[#1A1A1A]/62">Dung tích {item.volume}</p>
-                            <div className="mt-4 flex flex-wrap gap-4 text-sm text-[#1A1A1A]/68">
-                              <span>Số lượng: {item.quantity}</span>
-                              <span>Đơn giá: {formatCurrency(item.price)}</span>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedOrderId(isExpanded ? "" : order.orderId)}
+                    className="group w-full px-5 py-5 text-left transition hover:bg-[#FCFBF8] sm:px-6"
+                  >
+                    <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start">
+                      <div className="space-y-3">
+                        {order.items.slice(0, 2).map((item) => (
+                          <div
+                            key={`${order.orderId}-preview-${item.productId}`}
+                            className="flex flex-col gap-4 rounded-3xl bg-[#FCFBF8] p-4 sm:flex-row sm:items-center"
+                          >
+                            <div className="flex h-22 w-22 shrink-0 items-center justify-center rounded-3xl bg-[#F6F2E7] p-3">
+                              {item.image ? (
+                                <div
+                                  role="img"
+                                  aria-label={item.name}
+                                  className="h-full w-full bg-contain bg-center bg-no-repeat"
+                                  style={{ backgroundImage: `url(${item.image})` }}
+                                />
+                              ) : (
+                                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A1A1A]/32">Aromis</div>
+                              )}
                             </div>
-                            <p className="mt-4 text-base font-semibold text-[#1A1A1A]">
-                              Thành tiền: {formatCurrency(item.price * item.quantity)}
-                            </p>
+
+                            <div className="min-w-0 flex-1">
+                              <p className="text-lg font-semibold text-[#1A1A1A]">{item.name}</p>
+                              <p className="mt-1 text-sm text-[#1A1A1A]/58">{item.brand} • {item.volume}</p>
+                              <p className="mt-2 text-sm text-[#1A1A1A]/62">Số lượng: x{item.quantity}</p>
+                            </div>
+
+                            <div className="text-left sm:text-right">
+                              <p className="text-sm text-[#1A1A1A]/58">Giá lúc mua</p>
+                              <p className="mt-2 text-base font-semibold text-[#1A1A1A]">{formatCurrency(item.price)}</p>
+                            </div>
                           </div>
+                        ))}
+
+                        {order.items.length > 2 ? (
+                          <div className="rounded-3xl border border-dashed border-[#D4AF37]/45 bg-[#FFF9E9] px-4 py-3 text-sm text-[#7F5B00]">
+                            +{order.items.length - 2} sản phẩm khác trong cùng đơn hàng
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="rounded-3xl border border-[#1A1A1A]/8 bg-white p-5 xl:sticky xl:top-28">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#D4AF37]">Tổng thanh toán</p>
+                            <p className="mt-3 font-serif text-3xl text-[#1A1A1A]">{formatCurrency(order.totalAmount)}</p>
+                          </div>
+                          <span className="rounded-full bg-[#F4F1E8] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#1A1A1A]/62">
+                            {isExpanded ? "Đang mở chi tiết" : "Mở hồ sơ đơn"}
+                          </span>
                         </div>
-                      ))}
+
+                        <div className="mt-5 space-y-3 text-sm text-[#1A1A1A]/66">
+                          <p>
+                            Tổng số chai: <span className="font-semibold text-[#1A1A1A]">{totalUnits}</span>
+                          </p>
+                          <p>
+                            Thanh toán: <span className="font-semibold text-[#1A1A1A]">{order.paymentMethod}</span>
+                          </p>
+                          <p>
+                            Giao đến: <span className="font-semibold text-[#1A1A1A]">{order.shippingAddress}</span>
+                          </p>
+                        </div>
+
+                        <div className="mt-6 inline-flex items-center justify-center rounded-full bg-[#1A1A1A] px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white transition group-hover:bg-[#D4AF37] group-hover:text-[#1A1A1A]">
+                          {isExpanded ? "Thu gọn chi tiết" : "Xem chi tiết"}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="mt-6 flex flex-col gap-3 border-t border-[#1A1A1A]/8 pt-5 sm:flex-row sm:items-center sm:justify-between">
-                      <p className="text-sm text-[#1A1A1A]/62">Trạng thái đơn hàng được mô phỏng theo quy trình mua sắm trên website Aromis.</p>
-                      <p className="font-serif text-2xl">Tổng cộng: {formatCurrency(order.totalAmount)}</p>
+                    <div className="mt-6 grid gap-3 rounded-3xl bg-[#FCFBF8] p-4 sm:grid-cols-3">
+                      <div className="rounded-2xl border border-[#1A1A1A]/8 bg-white px-4 py-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4AF37]">Đơn vị giao</p>
+                        <p className="mt-2 text-sm font-semibold text-[#1A1A1A]">{order.fulfillment.providerName}</p>
+                        <p className="mt-1 text-sm text-[#1A1A1A]/56">{order.fulfillment.serviceLabel}</p>
+                      </div>
+
+                      <div className="rounded-2xl border border-[#1A1A1A]/8 bg-white px-4 py-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4AF37]">Thanh toán</p>
+                        <p className="mt-2 text-sm font-semibold text-[#1A1A1A]">{paymentStatusLabels[order.paymentStatus]}</p>
+                        <p className="mt-1 text-sm text-[#1A1A1A]/56">{order.paymentMethod}</p>
+                      </div>
+
+                      <div className="rounded-2xl border border-[#1A1A1A]/8 bg-white px-4 py-3">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#D4AF37]">Cập nhật mới nhất</p>
+                        <p className="mt-2 text-sm font-semibold text-[#1A1A1A]">{latestEvent?.title ?? "Đang cập nhật"}</p>
+                        <p className="mt-1 text-sm text-[#1A1A1A]/56">Mã vận đơn: {order.fulfillment.trackingCode}</p>
+                      </div>
                     </div>
-                  </div>
-                ) : null}
-              </article>
-            );
-          })}
-        </section>
+                  </button>
+
+                  {isExpanded ? <OrderDetailPanel order={order} formatCurrency={formatCurrency} /> : null}
+                </article>
+              );
+            })}
+          </section>
+        ) : (
+          <section className="mt-8 rounded-4xl border border-[#1A1A1A]/8 bg-white p-8 shadow-[0_18px_50px_rgba(26,26,26,0.06)] sm:p-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[#D4AF37]">Đơn mua</p>
+            <h2 className="mt-4 font-serif text-4xl text-[#1A1A1A]">Không tìm thấy đơn hàng phù hợp</h2>
+            <p className="mt-5 text-sm leading-7 text-[#1A1A1A]/68 sm:text-base">
+              Hãy thử đổi trạng thái đang lọc hoặc xóa từ khóa tìm kiếm để xem toàn bộ đơn mua của tài khoản này.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="inline-flex items-center justify-center rounded-full bg-[#1A1A1A] px-6 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]"
+              >
+                Xóa bộ lọc
+              </button>
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center rounded-full border border-[#1A1A1A]/12 px-6 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-[#1A1A1A] transition hover:border-[#D4AF37] hover:text-[#D4AF37]"
+              >
+                Tiếp tục mua sắm
+              </Link>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
