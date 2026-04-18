@@ -1,5 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import { blogs } from "@/data/blogs";
+
+// Khai báo type cho params
+type Props = {
+  params: {
+    id: string;
+  };
+};
 
 export async function generateStaticParams() {
   return blogs.map((blog) => ({
@@ -7,72 +15,39 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function BlogDetail({ params }) {
-  const { id } = await params;
+export default async function BlogDetail({ params }: Props) {
+  const { id } = params; 
 
-  const blog = blogs.find((b) => b.id.toString() === id);
+  const blog = blogs.find((b) => String(b.id) === String(id));
 
   if (!blog) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-[#1A1A1A] font-sans">
-        Không tìm thấy bài viết
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Không tìm thấy bài viết</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] py-16 px-4 font-sans">
-      <div className="max-w-5xl mx-auto">
-
-        {/* BACK BUTTON */}
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-2 mb-10 px-6 py-2.5
-                     bg-[#1A1A1A] text-[#F9F9F9]
-                     rounded-full shadow-sm
-                     transition-all duration-300
-                     hover:bg-[#D4AF37] hover:text-[#1A1A1A]
-                     hover:shadow-lg hover:-translate-y-1 active:scale-95 font-sans"
-        >
+    <div className="bg-[#F9F9F9] min-h-screen py-20 px-6">
+      <div className="max-w-4xl mx-auto">
+        <Link href="/blog" className="text-sm text-gray-500 hover:underline">
           ← Quay lại
         </Link>
 
-        {/* CARD */}
-        <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-[#1A1A1A]/5">
+        <h1 className="text-3xl font-bold mt-4 mb-6">{blog.title}</h1>
 
-          {/* IMAGE */}
-          {blog.image && (
-            <div className="w-full h-[360px] md:h-[460px] overflow-hidden">
-              <img
-                src={blog.image}
-                alt={blog.title}
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-              />
-            </div>
-          )}
+        {blog.image && (
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            width={800}
+            height={400}
+            className="w-full h-auto rounded-xl mb-6"
+          />
+        )}
 
-          <div className="p-10 md:p-14">
-
-            {/* TITLE */}
-            <h1 className="text-4xl md:text-5xl text-[#1A1A1A] mb-6 leading-tight text-center font-serif">
-              {blog.title}
-            </h1>
-
-            {/* DIVIDER */}
-            <div className="w-20 h-[2px] bg-[#D4AF37] mx-auto mb-10 opacity-90"></div>
-
-            {/* CONTENT */}
-            <p className="text-[#1A1A1A]/75 text-base md:text-lg leading-8 whitespace-pre-line text-justify font-sans">
-              {blog.content}
-            </p>
-
-            {/* FOOTER */}
-            <div className="mt-12 border-t border-[#1A1A1A]/10 pt-6 text-sm text-[#1A1A1A]/50 text-center tracking-wide font-sans">
-              ✦ Aromis Journal
-            </div>
-
-          </div>
-        </div>
+        <p className="text-gray-700 leading-relaxed">{blog.content}</p>
       </div>
     </div>
   );
