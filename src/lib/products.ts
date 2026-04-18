@@ -10,7 +10,7 @@ export interface Product {
   description: string;
   images: string[];
   stock: number;
-  createdAt: string;   // ✅ Thêm dòng này
+  createdAt: string;
 }
 
 export const products: Product[] = productsData as Product[];
@@ -21,6 +21,4 @@ export const getProductById = (id: string): Product | undefined =>
   products.find(p => p.id === id);
 
 export const getRelatedProducts = (currentId: string, gender?: string, limit = 4): Product[] =>
-  products
-    .filter(p => p.id !== currentId && (gender ? p.gender === gender : true))
-    .slice(0, limit);
+  products.filter(p => p.id !== currentId && (gender ? p.gender === gender : true)).slice(0, limit);
