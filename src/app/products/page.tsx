@@ -4,9 +4,12 @@ import { useState, useMemo } from 'react';
 import { getAllProducts, Product } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 
+type SortOption = 'newest' | 'price-asc' | 'price-desc';
+
 export default function ProductsPage() {
   const allProducts = useMemo(() => getAllProducts(), []);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(allProducts);
+  const [sortBy, setSortBy] = useState<SortOption>('newest');
 
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedGender, setSelectedGender] = useState('');
@@ -16,15 +19,63 @@ export default function ProductsPage() {
   const brands = useMemo(() => [...new Set(allProducts.map(p => p.brand))], [allProducts]);
   const genders = useMemo(() => [...new Set(allProducts.map(p => p.gender))], [allProducts]);
 
-  const applyFilters = () => {
+  // Hàm lọc + sắp xếp
+  const applyFiltersAndSort = () => {
     let filtered = [...allProducts];
+
+    // Lọc
     if (selectedBrand) filtered = filtered.filter(p => p.brand === selectedBrand);
     if (selectedGender) filtered = filtered.filter(p => p.gender === selectedGender);
     const min = minPrice ? parseInt(minPrice) : NaN;
     const max = maxPrice ? parseInt(maxPrice) : NaN;
     if (!isNaN(min)) filtered = filtered.filter(p => p.price >= min);
     if (!isNaN(max)) filtered = filtered.filter(p => p.price <= max);
+
+    // Sắp xếp
+    switch (sortBy) {
+      case 'price-asc':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'newest':
+      default:
+        filtered.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+        break;
+    }
+
     setFilteredProducts(filtered);
+  };
+
+  // Khi thay đổi sắp xếp, chỉ cần gọi lại hàm lọc và sắp xếp
+  const handleSortChange = (newSort: SortOption) => {
+    setSortBy(newSort);
+    // Gọi lại filter/sort với sort mới (dùng state hiện tại)
+    setTimeout(() => {
+      const filtered = [...allProducts];
+      let result = filtered;
+      // Lọc
+      if (selectedBrand) result = result.filter(p => p.brand === selectedBrand);
+      if (selectedGender) result = result.filter(p => p.gender === selectedGender);
+      const min = minPrice ? parseInt(minPrice) : NaN;
+      const max = maxPrice ? parseInt(maxPrice) : NaN;
+      if (!isNaN(min)) result = result.filter(p => p.price >= min);
+      if (!isNaN(max)) result = result.filter(p => p.price <= max);
+      // Sắp xếp theo newSort
+      switch (newSort) {
+        case 'price-asc':
+          result.sort((a, b) => a.price - b.price);
+          break;
+        case 'price-desc':
+          result.sort((a, b) => b.price - a.price);
+          break;
+        default:
+          // result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          result.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+      }
+      setFilteredProducts(result);
+    }, 0);
   };
 
   const resetFilters = () => {
@@ -32,10 +83,20 @@ export default function ProductsPage() {
     setSelectedGender('');
     setMinPrice('');
     setMaxPrice('');
-    setFilteredProducts(allProducts);
+    setSortBy('newest');
+    // Áp dụng lại filter/sort với trạng thái reset
+    const result = [...allProducts];
+    // result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    result.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+    setFilteredProducts(result);
   };
 
-  // 🎨 Styles object được thiết kế tinh tế
+  // Gọi applyFiltersAndSort khi bấm nút "Áp dụng"
+  const handleApply = () => {
+    applyFiltersAndSort();
+  };
+
+  // Styles (giữ nguyên như phiên bản đẹp trước đó, chỉ thêm style cho dropdown)
   const styles: Record<string, React.CSSProperties> = {
     page: {
       minHeight: '100vh',
@@ -53,9 +114,7 @@ export default function ProductsPage() {
       color: '#1A1A1A',
       marginBottom: '0.5rem',
     },
-    gold: {
-      color: '#D4AF37',
-    },
+    gold: { color: '#D4AF37' },
     subtitle: {
       color: '#666',
       marginBottom: '2rem',
@@ -67,9 +126,7 @@ export default function ProductsPage() {
       gap: '2rem',
       flexWrap: 'wrap',
     },
-    sidebar: {
-      flex: '0 0 280px',
-    },
+    sidebar: { flex: '0 0 280px' },
     filterCard: {
       backgroundColor: '#fff',
       borderRadius: '20px',
@@ -85,9 +142,7 @@ export default function ProductsPage() {
       marginBottom: '1.8rem',
       letterSpacing: '-0.01em',
     },
-    filterGroup: {
-      marginBottom: '1.8rem',
-    },
+    filterGroup: { marginBottom: '1.8rem' },
     label: {
       display: 'block',
       fontSize: '0.8rem',
@@ -184,19 +239,32 @@ export default function ProductsPage() {
       cursor: 'pointer',
       transition: 'background 0.2s, border 0.2s',
     },
-    main: {
-      flex: 1,
-      minWidth: 0,
-    },
+    main: { flex: 1, minWidth: 0 },
     resultBar: {
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'baseline',
+      alignItems: 'center',
       marginBottom: '1.8rem',
     },
     resultCount: {
       color: '#666',
       fontSize: '0.95rem',
+    },
+    sortSelect: {
+      padding: '0.6rem 2rem 0.6rem 1rem',
+      backgroundColor: '#fff',
+      border: '1px solid #e0e0e0',
+      borderRadius: '30px',
+      fontSize: '0.9rem',
+      color: '#1A1A1A',
+      fontFamily: 'inherit',
+      outline: 'none',
+      cursor: 'pointer',
+      appearance: 'none',
+      backgroundImage: 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%231A1A1A\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'6 9 12 15 18 9\'/></svg>")',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'right 0.8rem center',
+      backgroundSize: '14px',
     },
     productGrid: {
       display: 'grid',
@@ -223,12 +291,11 @@ export default function ProductsPage() {
         <p style={styles.subtitle}>Khám phá những mùi hương cao cấp</p>
 
         <div style={styles.content}>
-          {/* SIDEBAR FILTER */}
+          {/* Sidebar Filter */}
           <aside style={styles.sidebar}>
             <div style={styles.filterCard}>
               <h2 style={styles.filterHeader}>Bộ lọc</h2>
 
-              {/* Brand */}
               <div style={styles.filterGroup}>
                 <label style={styles.label}>Thương hiệu</label>
                 <select
@@ -241,7 +308,6 @@ export default function ProductsPage() {
                 </select>
               </div>
 
-              {/* Gender */}
               <div style={styles.filterGroup}>
                 <label style={styles.label}>Giới tính</label>
                 <div style={styles.radioGroup}>
@@ -266,7 +332,6 @@ export default function ProductsPage() {
                 )}
               </div>
 
-              {/* Price */}
               <div style={styles.filterGroup}>
                 <label style={styles.label}>Khoảng giá (VNĐ)</label>
                 <div style={styles.priceRow}>
@@ -289,9 +354,8 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div style={styles.actions}>
-                <button style={styles.applyBtn} onClick={applyFilters}>
+                <button style={styles.applyBtn} onClick={handleApply}>
                   Áp dụng bộ lọc
                 </button>
                 <button style={styles.resetBtn} onClick={resetFilters}>
@@ -301,13 +365,22 @@ export default function ProductsPage() {
             </div>
           </aside>
 
-          {/* PRODUCT LIST */}
+          {/* Main Content */}
           <div style={styles.main}>
             <div style={styles.resultBar}>
               <span style={styles.resultCount}>
                 Hiển thị <strong style={{ color: '#1A1A1A' }}>{filteredProducts.length}</strong> sản phẩm
               </span>
-              {/* Có thể thêm dropdown sắp xếp ở đây sau */}
+              {/* Dropdown sắp xếp */}
+              <select
+                style={styles.sortSelect}
+                value={sortBy}
+                onChange={(e) => handleSortChange(e.target.value as SortOption)}
+              >
+                <option value="newest">Mới nhất</option>
+                <option value="price-asc">Giá tăng dần</option>
+                <option value="price-desc">Giá giảm dần</option>
+              </select>
             </div>
 
             {filteredProducts.length > 0 ? (
