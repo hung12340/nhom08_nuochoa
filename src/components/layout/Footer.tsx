@@ -63,6 +63,7 @@ export default function Footer() {
             <ul className="space-y-4 font-light text-gray-400">
               <li><Link href="/about" className="hover:text-[#D4AF37] transition-colors">Về Aromis</Link></li>
               <li><Link href="/contact" className="hover:text-[#D4AF37] transition-colors">Liên hệ</Link></li>
+              <li><Link href="/login" className="hover:text-[#D4AF37] transition-colors">Đăng nhập / Đăng ký</Link></li>
               <li><Link href="/faq" className="hover:text-[#D4AF37] transition-colors">Câu hỏi thường gặp</Link></li>
               <li><Link href="/policy" className="hover:text-[#D4AF37] transition-colors">Chính sách đổi trả</Link></li>
             </ul>
