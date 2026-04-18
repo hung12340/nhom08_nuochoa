@@ -14,16 +14,17 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      {/* Ảnh chính */}
-      <div style={{
-        position: 'relative',
-        aspectRatio: '1 / 1',
-        width: '100%',
-        backgroundColor: '#fafafa',
-        borderRadius: '20px',
-        overflow: 'hidden',
-        border: '1px solid rgba(212, 175, 55, 0.15)',
-      }}>
+      <div
+        style={{
+          position: 'relative',
+          aspectRatio: '1 / 1',
+          width: '100%',
+          backgroundColor: '#fafafa',
+          borderRadius: '20px',
+          overflow: 'hidden',
+          border: '1px solid rgba(212, 175, 55, 0.15)',
+        }}
+      >
         <Image
           src={images[selectedIndex]}
           alt={`${name} - ảnh chính`}
@@ -34,9 +35,15 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
         />
       </div>
 
-      {/* Thumbnails */}
       {images.length > 1 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.75rem',
+            justifyContent: 'center',
+          }}
+        >
           {images.map((img, idx) => (
             <button
               key={idx}
@@ -56,7 +63,13 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
               onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
               onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             >
-              <Image src={img} alt={`${name} - thumb ${idx + 1}`} fill sizes="70px" style={{ objectFit: 'cover' }} />
+              <Image
+                src={img}
+                alt={`${name} - thumb ${idx + 1}`}
+                fill
+                sizes="70px"
+                style={{ objectFit: 'cover' }}
+              />
             </button>
           ))}
         </div>

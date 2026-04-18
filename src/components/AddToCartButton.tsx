@@ -26,7 +26,6 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  // Nếu hết hàng
   if (product.stock === 0) {
     return (
       <button
@@ -51,7 +50,6 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      {/* Chọn số lượng */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <span style={{ fontWeight: 500, color: '#1a1a1a', minWidth: '80px' }}>Số lượng:</span>
         <div
@@ -74,10 +72,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
               fontSize: '1.2rem',
               color: '#1a1a1a',
               cursor: 'pointer',
-              transition: 'background 0.2s',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f5f5')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
           >
             −
           </button>
@@ -92,17 +87,13 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
               fontSize: '1.2rem',
               color: '#1a1a1a',
               cursor: 'pointer',
-              transition: 'background 0.2s',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f5f5')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
           >
             +
           </button>
         </div>
       </div>
 
-      {/* Nút Thêm vào giỏ */}
       <button
         onClick={handleAddToCart}
         style={{
@@ -116,14 +107,8 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           fontWeight: 600,
           fontFamily: '"Montserrat", sans-serif',
           cursor: 'pointer',
-          transition: 'background 0.3s, transform 0.1s',
+          transition: 'background 0.3s',
           boxShadow: '0 4px 12px rgba(212, 175, 55, 0.2)',
-        }}
-        onMouseEnter={(e) => {
-          if (!added) e.currentTarget.style.backgroundColor = '#c19b2e';
-        }}
-        onMouseLeave={(e) => {
-          if (!added) e.currentTarget.style.backgroundColor = '#d4af37';
         }}
       >
         {added ? '✓ Đã thêm vào giỏ hàng!' : 'Thêm vào giỏ hàng'}
