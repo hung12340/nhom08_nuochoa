@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { blogs } from "@/data/blogs";
 
+type BlogDetailPageProps = {
+  params: Promise<{ id: string }>;
+};
+
 export async function generateStaticParams() {
   return blogs.map((blog) => ({
     id: blog.id.toString(),
   }));
 }
 
-export default async function BlogDetail({ params }) {
+export default async function BlogDetail({ params }: BlogDetailPageProps) {
   const { id } = await params;
 
   const blog = blogs.find((b) => b.id.toString() === id);
