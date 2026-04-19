@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react'; 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getAllProducts, Product } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
@@ -40,7 +40,7 @@ const S = {
   empty: { textAlign: 'center' as const, padding: '3rem', backgroundColor: '#fff', borderRadius: '20px', color: '#888', fontSize: '1rem', border: '1px solid rgba(212,175,55,0.1)' },
 };
 
-export default function ProductsPage() {
+function ProductsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const allProducts = useMemo(() => getAllProducts(), []);
@@ -172,5 +172,18 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  );
+}
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9f9f9' }}>
+        <p style={{ fontFamily: '"Playfair Display", serif', color: '#d4af37', fontSize: '1.2rem' }}>
+          Đang chuẩn bị không gian mùi hương Aromis...
+        </p>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }
