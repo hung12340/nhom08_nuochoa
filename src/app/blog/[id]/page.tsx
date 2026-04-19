@@ -14,6 +14,7 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogDetail({ params }: Props) {
+  // ✅ phải await params
   const { id } = await params;
 
   const blog = blogs.find((b) => b.id.toString() === id);
