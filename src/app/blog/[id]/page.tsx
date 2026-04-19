@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { blogs } from "@/data/blogs";
 
 type Props = {
@@ -14,7 +15,6 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogDetail({ params }: Props) {
-  // ✅ phải await params
   const { id } = await params;
 
   const blog = blogs.find((b) => b.id.toString() === id);
@@ -49,11 +49,14 @@ export default async function BlogDetail({ params }: Props) {
 
           {/* IMAGE */}
           {blog.image && (
-            <div className="w-full h-[360px] md:h-[460px] overflow-hidden">
-              <img
+            <div className="relative w-full h-[360px] md:h-[460px] overflow-hidden">
+              <Image
                 src={blog.image}
                 alt={blog.title}
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                fill
+                priority 
+                sizes="100vw" 
+                className="object-cover transition-transform duration-700 hover:scale-105"
               />
             </div>
           )}
@@ -61,7 +64,7 @@ export default async function BlogDetail({ params }: Props) {
           <div className="p-10 md:p-14">
 
             {/* TITLE */}
-            <h1 className="text-4xl md:text-5xl text-[#1A1A1A] mb-6 leading-tight text-center font-serif">
+            <h1 className="text-4xl md:text-5xl text-[#1A1A1A] mb-6 leading-tight text-center font-serif tracking-wide md:tracking-widest">
               {blog.title}
             </h1>
 
@@ -69,7 +72,7 @@ export default async function BlogDetail({ params }: Props) {
             <div className="w-20 h-[2px] bg-[#D4AF37] mx-auto mb-10 opacity-90"></div>
 
             {/* CONTENT */}
-            <p className="text-[#1A1A1A]/75 text-base md:text-lg leading-8 whitespace-pre-line text-justify font-sans">
+            <p className="text-[#1A1A1A]/70 text-base md:text-lg leading-8 whitespace-pre-line text-justify font-sans">
               {blog.content}
             </p>
 
