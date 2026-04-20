@@ -1,17 +1,22 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { BASE_PATH } from '@/lib/constants';
+import { getAllProducts } from '@/lib/products';
 
 export default function Header() {
+  const allProducts = getAllProducts();
+  const brands = Array.from(new Set(allProducts.map(p => p.brand)));
+
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-sm font-sans transition-all duration-300">
       <div className="bg-[#1A1A1A] text-[#D4AF37] text-[10px] md:text-xs py-2 text-center tracking-widest uppercase font-medium">
-        Miễn phí vận chuyển toàn quốc cho đơn hàng từ 2.000.000 VNĐ
+        CỬA HÀNG NƯỚC HOA CHÍNH HÃNG - AROMIS
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
+          {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="relative block w-17 h-17 md:w-17 md:h-17 hover:opacity-80 transition-opacity">
               <Image 
@@ -24,23 +29,51 @@ export default function Header() {
             </Link>
           </div>
 
-          <nav className="hidden md:flex space-x-10">
+          <nav className="hidden md:flex space-x-10 items-center">
             <Link href="/" className="text-sm font-semibold text-[#1A1A1A] uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Trang chủ
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/nam" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+            
+            <Link href="/products?gender=Nam" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Nam
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/nu" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+            
+            <Link href="/products?gender=Nữ" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Nữ
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/thuong-hieu" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
-              Thương Hiệu
+            
+            <Link href="/products?gender=Unisex" className="text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
+              Unisex
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
             </Link>
+
+            <div className="relative group">
+              <Link href="/products" className="flex items-center gap-1 text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative py-2">
+                Thương Hiệu
+                <svg className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+                <span className="absolute bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+
+              <div className="absolute top-full left-0 w-48 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                <div className="bg-white shadow-lg border border-gray-100 rounded-md py-2 flex flex-col max-h-80 overflow-y-auto">
+                  {brands.map((brand) => (
+                    <Link 
+                      key={brand} 
+                      href={`/products?brand=${encodeURIComponent(brand)}`}
+                      className="px-4 py-2 text-sm text-gray-600 hover:text-[#D4AF37] hover:bg-gray-50 transition-colors"
+                    >
+                      {brand}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
           </nav>
 
           <div className="flex items-center space-x-5 md:space-x-6 text-[#1A1A1A]">
