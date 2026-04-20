@@ -1,6 +1,7 @@
 "use client";
 
 import { useCartStore } from "@/store/cartStore";
+import Link from "next/link";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice } = useCartStore();
@@ -116,10 +117,13 @@ export default function CartPage() {
               </span>
             </div>
 
-            {/* BUTTON */}
-            <button className="w-full mt-8 bg-[#D4AF37] text-[#1A1A1A] py-3 tracking-widest text-sm font-semibold hover:bg-[#1A1A1A] hover:text-white transition duration-300">
+            {/* CHECKOUT BUTTON */}
+            <Link
+              href="/checkout"
+              className="w-full block text-center mt-8 bg-[#D4AF37] text-[#1A1A1A] py-3 tracking-widest text-sm font-semibold hover:bg-[#1A1A1A] hover:text-white transition duration-300"
+            >
               THANH TOÁN
-            </button>
+            </Link>
 
             {/* CONTINUE */}
             <p className="text-center text-sm text-gray-400 mt-4">
