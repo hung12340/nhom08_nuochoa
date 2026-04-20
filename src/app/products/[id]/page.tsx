@@ -26,8 +26,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
           <BackButton />
           <div style={{ fontSize: '0.9rem', color: '#888' }}>
-            <a href="/" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Trang chủ</a> /{' '}
-            <a href="/products" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Sản phẩm</a> /{' '}
+            <a href="/nhom08_nuochoa/" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Trang chủ</a> /{' '}
+            <a href="/nhom08_nuochoa/products" style={{ color: '#1a1a1a', textDecoration: 'none' }}>Sản phẩm</a> /{' '}
             <span style={{ color: '#d4af37' }}>{product.name}</span>
           </div>
         </div>
