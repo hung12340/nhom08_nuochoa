@@ -208,5 +208,95 @@
     ],
     "stock": 19,
     "createdAt": "2026-04-01"
+  },
+  {
+    "id": "15",
+    "name": "Jo Malone Peony & Blush Suede Cologne",
+    "brand": "Jo Malone",
+    "price": 2780000,
+    "volume": "100ml",
+    "gender": "Unisex",
+    "description": "Hương thơm của hoa mẫu đơn, táo đỏ và da lộn, tạo nên một phong cách thanh lịch, nữ tính, lý tưởng cho những buổi tiệc nhẹ nhàng và các dịp dạo phố.",
+    "images": [
+      "https://orchard.vn/wp-content/uploads/2024/07/jo-malone-london-peony-and-blush-suede-cologne_4.jpg",
+      "https://orchard.vn/wp-content/uploads/2024/07/jo-malone-london-peony-and-blush-suede-cologne_3.jpg"
+    ],
+    "stock": 45,
+    "createdAt": "2026-04-11"
+  },
+  {
+    "id": "16",
+    "name": "Calvin Klein CK One EDT",
+    "brand": "Calvin Klein (CK)",
+    "price": 548000,
+    "volume": "100ml",
+    "gender": "Unisex",
+    "description": "Hương thơm unisex tươi mát và năng động, hoàn hảo cho mọi dịp trong ngày, từ công sở đến các buổi gặp gỡ xã hội.",
+    "images": [
+      "https://orchard.vn/wp-content/uploads/2014/06/calvin-klein-ck-one_3-1.jpg",
+      "https://orchard.vn/wp-content/uploads/2014/06/calvin-klein-ck-one_5-1.jpg"
+    ],
+    "stock": 25,
+    "createdAt": "2026-04-12"
+  },
+  {
+    "id": "17",
+    "name": "Chloé Love Story EDP",
+    "brand": "Chlóe",
+    "price": 1780000,
+    "volume": "100ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của hoa cam, hoa nhài và gỗ tuyết tùng, tạo nên một phong cách thanh lịch, lãng mạn, lý tưởng cho những buổi tối hẹn hò và các dịp đặc biệt.",
+    "images": [
+      "https://orchard.vn/wp-content/uploads/2014/12/chloe-love-story_3.jpg",
+      "https://orchard.vn/wp-content/uploads/2014/12/chloe-love-story_5.jpg"
+    ],
+    "stock": 45,
+    "createdAt": "2026-04-12"
+  },
+  {
+    "id": "18",
+    "name": "Chloé Nomade EDP",
+    "brand": "Chlóe",
+    "price": 1980000,
+    "volume": "75ml",
+    "gender": "Nữ",
+    "description": "Hương thơm của mận Mirabelle, hoa lan Nam Phi và rêu sồi, tạo nên một phong cách tự do, phóng khoáng, lý tưởng cho những chuyến phiêu lưu và các dịp gặp gỡ bạn bè.",
+    "images": [
+      "https://orchard.vn/wp-content/uploads/2018/10/chloe-nomade-edp_3_new.jpg",
+      "https://orchard.vn/wp-content/uploads/2018/10/chloe-nomade-edp-1-900x900.webp"
+    ],
+    "stock": 35,
+    "createdAt": "2026-04-12"
+  },
+  {
+    "id": "19",
+    "name": "Versace Eros EDT",
+    "brand": "Versace",
+    "price": 1780000,
+    "volume": "100ml",
+    "gender": "Nam",
+    "description": "Một biểu tượng của sự mạnh mẽ và đam mê, hoàn hảo cho những buổi hẹn hò đầy lãng mạn và các sự kiện quan trọng.",
+    "images": [
+      "https://orchard.vn/wp-content/uploads/2014/06/versace-eros_3.jpg",
+      "https://orchard.vn/wp-content/uploads/2014/06/versace-eros_5.jpg"
+    ],
+    "stock": 36,
+    "createdAt": "2026-04-12"
+  },
+  {
+    "id": "20",
+    "name": "Kilian Black Phantom EDP",
+    "brand": "Kilian",
+    "price": 5380000,
+    "volume": "50ml",
+    "gender": "Unisex",
+    "description": "Hương thơm bí ẩn và quyến rũ, lý tưởng cho các buổi tối sang trọng và những dịp đặc biệt.",
+    "images": [
+      "https://orchard.vn/wp-content/uploads/2019/08/kilian-black-phantom_3.jpg",
+      "https://orchard.vn/wp-content/uploads/2019/08/kilian-black-phantom_2.jpg"
+    ],
+    "stock": 11,
+    "createdAt": "2026-04-12"
   }
 ]
