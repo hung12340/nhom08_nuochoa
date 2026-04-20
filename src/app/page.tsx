@@ -1,9 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import products from "@/lib/data.json"; 
+import products from "@/lib/data.json";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function HomePage() {
   const recentProducts = products.slice(0, 4);
+
+  const router = useRouter();
+  const [search, setSearch] = useState("");
+
+  const handleSearch = () => {
+    if (!search.trim()) return;
+    router.push(`/search?keyword=${search}`);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F9F9F9] text-[#1A1A1A] font-sans">
@@ -23,12 +35,33 @@ export default function HomePage() {
           <span className="text-[#D4AF37] tracking-[0.3em] uppercase text-sm font-semibold mb-4 block">
             Aromis
           </span>
+
           <h1 className="text-5xl md:text-7xl font-serif mb-6 leading-tight text-white">
             Đẳng cấp đến từ sự chân thực
           </h1>
+
           <p className="text-lg text-gray-200 mb-8 max-w-xl font-light">
             Bộ sưu tập nước hoa cao cấp được tuyển chọn kỹ lưỡng từ những thương hiệu hàng đầu thế giới.
           </p>
+
+          {/* ✅ SEARCH (THÊM NHẸ - KHÔNG PHÁ UI) */}
+          <div className="flex w-full max-w-md mb-6">
+            <input
+              type="text"
+              placeholder="Tìm nước hoa..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              className="flex-1 px-4 py-3 text-black outline-none"
+            />
+            <button
+              onClick={handleSearch}
+              className="bg-[#D4AF37] px-5 text-[#1A1A1A] font-bold hover:bg-white transition"
+            >
+              🔍
+            </button>
+          </div>
+
           <Link
             href="/products"
             className="bg-[#D4AF37] text-[#1A1A1A] px-10 py-4 rounded-none font-bold tracking-widest hover:bg-white transition-all duration-300"
@@ -38,6 +71,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* PHẦN DƯỚI GIỮ NGUYÊN */}
       <section className="py-24 bg-[#F9F9F9]">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-serif text-[#1A1A1A] mb-12">Bộ Sưu Tập</h2>

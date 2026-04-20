@@ -5,10 +5,20 @@ import Image from 'next/image';
 import { BASE_PATH } from '@/lib/constants';
 import { useEffect, useState } from "react";
 import { useCartStore } from "@/store/cartStore";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { totalItems } = useCartStore();
   const [mounted, setMounted] = useState(false);
+
+  // ✅ thêm search (KHÔNG ảnh hưởng logic cũ)
+  const [keyword, setKeyword] = useState("");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    if (!keyword.trim()) return;
+    router.push(`/search?keyword=${keyword}`);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -23,6 +33,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
+          {/* LOGO */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="relative block w-17 h-17 md:w-17 md:h-17 hover:opacity-80 transition-opacity">
               <Image 
@@ -35,6 +46,7 @@ export default function Header() {
             </Link>
           </div>
 
+          {/* NAV (GIỮ NGUYÊN) */}
           <nav className="hidden md:flex space-x-10">
             <Link href="/" className="text-sm font-semibold text-[#1A1A1A] uppercase tracking-wider hover:text-[#D4AF37] transition-colors relative group">
               Trang chủ
@@ -54,17 +66,30 @@ export default function Header() {
             </Link>
           </nav>
 
+          {/* RIGHT SIDE */}
           <div className="flex items-center space-x-5 md:space-x-6 text-[#1A1A1A]">
             
-            {/* SEARCH */}
-            <button className="hover:text-[#D4AF37] transition-colors">
-              <span className="sr-only">Tìm kiếm</span>
-              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-            </button>
-            
-            {/* ACCOUNT */}
+            {/* ✅ SEARCH (CHỈ THÊM, KHÔNG SỬA CŨ) */}
+            <div className="flex items-center border rounded-full overflow-hidden">
+              <input
+                type="text"
+                placeholder="Tìm..."
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                className="px-3 py-1 text-sm outline-none w-32 md:w-40"
+              />
+              <button 
+                onClick={handleSearch}
+                className="px-2 hover:text-[#D4AF37] transition-colors"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+
+            {/* ACCOUNT (GIỮ NGUYÊN) */}
             <button className="hover:text-[#D4AF37] transition-colors hidden sm:block">
               <span className="sr-only">Tài khoản</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,14 +97,13 @@ export default function Header() {
               </svg>
             </button>
 
-            {/* CART */}
+            {/* CART (GIỮ NGUYÊN) */}
             <Link href="/cart" className="hover:text-[#D4AF37] transition-colors relative">
               <span className="sr-only">Giỏ hàng</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
               </svg>
 
-              {/* 👉 BADGE ĐỘNG (FIX HYDRATION) */}
               {mounted && totalItems() > 0 && (
                 <span className="absolute -top-1.5 -right-2 bg-[#D4AF37] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
                   {totalItems()}
@@ -87,7 +111,7 @@ export default function Header() {
               )}
             </Link>
 
-            {/* MENU MOBILE */}
+            {/* MENU MOBILE (GIỮ NGUYÊN) */}
             <button className="md:hidden hover:text-[#D4AF37] transition-colors ml-2">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -95,7 +119,6 @@ export default function Header() {
             </button>
 
           </div>
-
         </div>
       </div>
     </header>
