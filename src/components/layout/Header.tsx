@@ -1,8 +1,19 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { BASE_PATH } from '@/lib/constants';
+import { useEffect, useState } from "react";
+import { useCartStore } from "@/store/cartStore";
 
 export default function Header() {
+  const { totalItems } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-sm font-sans transition-all duration-300">
       <div className="bg-[#1A1A1A] text-[#D4AF37] text-[10px] md:text-xs py-2 text-center tracking-widest uppercase font-medium">
@@ -44,6 +55,8 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center space-x-5 md:space-x-6 text-[#1A1A1A]">
+            
+            {/* SEARCH */}
             <button className="hover:text-[#D4AF37] transition-colors">
               <span className="sr-only">Tìm kiếm</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,6 +64,7 @@ export default function Header() {
               </svg>
             </button>
             
+            {/* ACCOUNT */}
             <button className="hover:text-[#D4AF37] transition-colors hidden sm:block">
               <span className="sr-only">Tài khoản</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,21 +72,28 @@ export default function Header() {
               </svg>
             </button>
 
+            {/* CART */}
             <Link href="/cart" className="hover:text-[#D4AF37] transition-colors relative">
               <span className="sr-only">Giỏ hàng</span>
               <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
               </svg>
-              <span className="absolute -top-1.5 -right-2 bg-[#D4AF37] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                2
-              </span>
+
+              {/* 👉 BADGE ĐỘNG (FIX HYDRATION) */}
+              {mounted && totalItems() > 0 && (
+                <span className="absolute -top-1.5 -right-2 bg-[#D4AF37] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {totalItems()}
+                </span>
+              )}
             </Link>
 
+            {/* MENU MOBILE */}
             <button className="md:hidden hover:text-[#D4AF37] transition-colors ml-2">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
             </button>
+
           </div>
 
         </div>
