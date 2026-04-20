@@ -7,7 +7,7 @@ import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
 
 type SortOption = 'newest' | 'price-asc' | 'price-desc';
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 9;
 
 // Style object tập trung – giữ nguyên toàn bộ thiết kế đẹp
 const S = {
