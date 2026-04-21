@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "email": "hung@hcmute.edu.vn",
+    "password": "123456",
+    "name": "Lê Xuân Hùng",
+    "avatar": "/nhom08_nuochoa/images/hung.jpg" 
+  },
+  {
+    "id": "2",
+    "email": "hoai@hcmute.edu.vn",
+    "password": "123456",
+    "name": "Minh Hoài",
+    "avatar": "/nhom08_nuochoa/images/minhhoai.jpg" 
+  }
+]

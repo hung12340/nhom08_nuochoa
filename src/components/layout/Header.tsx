@@ -6,12 +6,15 @@ import { useEffect, useState } from "react";
 import { BASE_PATH } from "@/lib/constants";
 import { getAllProducts } from "@/lib/products";
 import { useCartStore } from "@/store/cartStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function Header() {
   const allProducts = getAllProducts();
   const brands = Array.from(new Set(allProducts.map((p) => p.brand)));
 
   const totalItems = useCartStore((state) => state.totalItems());
+  
+  const { isLoggedIn, user, logout } = useAuthStore();
 
   const [mounted, setMounted] = useState(false);
 
@@ -86,7 +89,6 @@ export default function Header() {
                 className="flex items-center gap-1 text-sm font-medium text-gray-500 uppercase tracking-wider hover:text-[#D4AF37] transition-colors py-2"
               >
                 Thương Hiệu
-
                 <svg
                   className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180"
                   fill="none"
@@ -137,22 +139,85 @@ export default function Header() {
               </svg>
             </button>
 
-            {/* ACCOUNT */}
-            <button className="hover:text-[#D4AF37] transition-colors hidden sm:block">
-              <svg
-                className="w-5 h-5 md:w-6 md:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {/* ACCOUNT / USER PROFILE */}
+            {mounted && (
+              isLoggedIn && user ? (
+                // Hiển thị khi đã đăng nhập
+                <div className="relative group hidden sm:block">
+                  <div className="flex items-center gap-2 cursor-pointer py-2">
+                    <div className="relative w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden border border-gray-200">
+                      <Image
+                        src={user.avatar || `${BASE_PATH}/images/default-avatar.png`}
+                        alt={user.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700 hover:text-[#D4AF37] transition-colors hidden lg:block">
+                      {user.name}
+                    </span>
+                  </div>
+
+                  {/* Dropdown User Menu */}
+                  <div className="absolute right-0 top-full mt-1 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    <div className="bg-white shadow-lg border border-gray-100 rounded-md py-2">
+                      <div className="px-4 py-2 border-b border-gray-50 lg:hidden block">
+                         <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
+                      </div>
+                      <Link href="/orders" className="block px-4 py-2 text-sm text-gray-600 hover:text-[#D4AF37] hover:bg-gray-50 transition-colors sm:hidden">
+                        Đơn hàng của tôi
+                      </Link>
+                      <button
+                        onClick={logout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        Đăng xuất
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Hiển thị khi chưa đăng nhập
+                <Link href="/login" className="hover:text-[#D4AF37] transition-colors hidden sm:block">
+                  <svg
+                    className="w-5 h-5 md:w-6 md:h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                </Link>
+              )
+            )}
+
+            {/* ORDERS (Chỉ hiển thị khi đã đăng nhập) */}
+            {mounted && isLoggedIn && (
+              <Link
+                href="/orders"
+                className="hover:text-[#D4AF37] transition-colors relative"
+                title="Đơn hàng của tôi"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </button>
+                <svg
+                  className="w-5 h-5 md:w-6 md:h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
+                </svg>
+              </Link>
+            )}
 
             {/* CART */}
             <Link

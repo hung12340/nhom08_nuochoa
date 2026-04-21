@@ -1,0 +1,53 @@
+[
+  {
+    "id": "ARM-2026-001",
+    "userEmail": "hung@hcmute.edu.vn",
+    "date": "10/04/2026",
+    "total": 3480000,
+    "status": "Đã giao",
+    "items": [
+      {
+        "name": "Dior Sauvage EDP",
+        "quantity": 1,
+        "price": 3480000,
+        "image": "https://orchard.vn/wp-content/uploads/2018/04/dior-sauvage-edp_3.jpg"
+      }
+    ]
+  },
+  {
+    "id": "ARM-2026-002",
+    "userEmail": "hung@hcmute.edu.vn",
+    "date": "15/04/2026",
+    "total": 8260000,
+    "status": "Đang xử lý",
+    "items": [
+      {
+        "name": "Chanel Bleu De Chanel EDP",
+        "quantity": 1,
+        "price": 3780000,
+        "image": "https://orchard.vn/wp-content/uploads/2015/01/chanel-bleu-de-chanel-edp_3.jpg"
+      },
+      {
+        "name": "Chanel Chance Eau Tendre EDP",
+        "quantity": 1,
+        "price": 4480000,
+        "image": "https://orchard.vn/wp-content/uploads/2019/02/chanel-chance-eau-tendre-edp_7-900x1124.jpg"
+      }
+    ]
+  },
+  {
+    "id": "ARM-2026-003",
+    "userEmail": "hung@hcmute.edu.vn",
+    "date": "20/04/2026",
+    "total": 5380000,
+    "status": "Đã hủy",
+    "items": [
+      {
+        "name": "Kilian Black Phantom EDP",
+        "quantity": 1,
+        "price": 5380000,
+        "image": "https://orchard.vn/wp-content/uploads/2019/08/kilian-black-phantom_3.jpg"
+      }
+    ]
+  }
+]
