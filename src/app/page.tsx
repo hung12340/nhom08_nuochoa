@@ -3,7 +3,9 @@ import Image from "next/image";
 import products from "@/lib/data.json"; 
 
 export default function HomePage() {
-  const recentProducts = products.slice(0, 4);
+  const recentProducts = [...products]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 4);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F9F9F9] text-[#1A1A1A] font-sans">
