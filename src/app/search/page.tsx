@@ -1,12 +1,13 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import products from "@/lib/data.json";
 
-export default function SearchPage() {
+// 1. Tách phần nội dung chính thành một component riêng
+function SearchContent() {
   const searchParams = useSearchParams();
   const keywordParam = searchParams.get("keyword") || "";
 
@@ -136,5 +137,13 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-gray-500">Đang tải kết quả tìm kiếm...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }
