@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { BASE_PATH } from "@/lib/constants";
 import { getAllProducts } from "@/lib/products";
 import { useCartStore } from "@/store/cartStore";
@@ -17,6 +18,7 @@ export default function Header() {
   const { isLoggedIn, user, logout } = useAuthStore();
 
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -123,7 +125,10 @@ export default function Header() {
           {/* RIGHT ICONS */}
           <div className="flex items-center space-x-5 md:space-x-6 text-[#1A1A1A]">
             {/* SEARCH */}
-            <button className="hover:text-[#D4AF37] transition-colors">
+            <button
+              onClick={() => router.push("/search")}
+              className="hover:text-[#D4AF37] transition-colors"
+            >
               <svg
                 className="w-5 h-5 md:w-6 md:h-6"
                 fill="none"
