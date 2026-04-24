@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getAllProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
@@ -40,9 +40,11 @@ const S = {
   mobileFilterOverlay: { position: 'fixed' as const, top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000 },
   mobileFilterPanel: { position: 'fixed' as const, top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#fff', zIndex: 1001, padding: 20, overflowY: 'auto' as const, boxSizing: 'border-box' as const },
   mobileCloseBtn: { position: 'absolute' as const, top: 16, right: 16, background: 'none', border: '1px solid #ccc', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', cursor: 'pointer', color: '#1a1a1a' },
+  loadingFallback: { display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh', fontFamily: '"Playfair Display", serif', fontSize: '1.2rem', color: '#d4af37' }
 };
 
-export default function ProductsPage() {
+/* ---------- Component con chứa logic filter ---------- */
+function ProductsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const allProducts = useMemo(() => getAllProducts(), []);
@@ -61,7 +63,6 @@ export default function ProductsPage() {
   const mode: 'mobile' | 'tablet' | 'desktop' =
     screenWidth < 768 ? 'mobile' : screenWidth < 1024 ? 'tablet' : 'desktop';
 
-  // Tablet: sidebar cực gọn
   const sidebarWidth = mode === 'mobile' ? 0 : mode === 'tablet' ? 160 : 240;
   const containerPadding = mode === 'tablet' ? '1.5rem 1rem' : '2rem 1.5rem';
   const filterCardPadding = mode === 'tablet' ? '0.6rem 0.5rem' : '1.2rem 1rem';
@@ -129,7 +130,6 @@ export default function ProductsPage() {
   const handleSort = (s: SortOption) => updateUrl({ sort: s, page: '1' });
   const handlePage = (p: number) => { updateUrl({ page: String(p) }); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
-  // Nội dung bộ lọc dùng chung
   const renderFilterContent = () => (
     <>
       <h2 style={S.filterTitle}>Bộ lọc</h2>
@@ -166,55 +166,52 @@ export default function ProductsPage() {
   );
 
   return (
-    <div style={S.page}>
-      <div style={{ ...S.container, padding: containerPadding }}>
-        <h1 style={S.title}>Bộ sưu tập <span style={S.gold}>Aromis</span></h1>
-        <p style={S.subtitle}>Khám phá những mùi hương cao cấp</p>
+    <div style={{ ...S.container, padding: containerPadding }}>
+      <h1 style={S.title}>Bộ sưu tập <span style={S.gold}>Aromis</span></h1>
+      <p style={S.subtitle}>Khám phá những mùi hương cao cấp</p>
 
-        {mode === 'mobile' && (
-          <button style={S.mobileFilterBtn} onClick={() => setShowMobileFilter(true)}>
-            <span>☰</span> Lọc sản phẩm
-          </button>
+      {mode === 'mobile' && (
+        <button style={S.mobileFilterBtn} onClick={() => setShowMobileFilter(true)}>
+          <span>☰</span> Lọc sản phẩm
+        </button>
+      )}
+
+      <div style={{ ...S.content, gap: contentGap }}>
+        {mode !== 'mobile' && (
+          <aside style={{ flex: `0 0 ${sidebarWidth}px` }}>
+            <div style={{ ...S.filterCard, padding: filterCardPadding }}>
+              {renderFilterContent()}
+            </div>
+          </aside>
         )}
 
-        <div style={{ ...S.content, gap: contentGap }}>
-          {mode !== 'mobile' && (
-            <aside style={{ flex: `0 0 ${sidebarWidth}px` }}>
-              <div style={{ ...S.filterCard, padding: filterCardPadding }}>
-                {renderFilterContent()}
-              </div>
-            </aside>
-          )}
-
-          <div style={S.main}>
-            <div style={S.resultBar}>
-              <span style={S.resultCount}>
-                Hiển thị <strong style={{ color: '#1a1a1a' }}>{filtered.length}</strong> sản phẩm
-              </span>
-              <select style={S.sortSelect} value={sortBy} onChange={e => handleSort(e.target.value as SortOption)}>
-                <option value="newest">Mới nhất</option>
-                <option value="price-asc">Giá tăng dần</option>
-                <option value="price-desc">Giá giảm dần</option>
-              </select>
-            </div>
-
-            {paginated.length ? (
-              <>
-                <div style={{ ...S.productGrid, gridTemplateColumns }}>
-                  {paginated.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-                <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePage} />
-              </>
-            ) : (
-              <div style={S.empty}>Không tìm thấy sản phẩm phù hợp.</div>
-            )}
+        <div style={S.main}>
+          <div style={S.resultBar}>
+            <span style={S.resultCount}>
+              Hiển thị <strong style={{ color: '#1a1a1a' }}>{filtered.length}</strong> sản phẩm
+            </span>
+            <select style={S.sortSelect} value={sortBy} onChange={e => handleSort(e.target.value as SortOption)}>
+              <option value="newest">Mới nhất</option>
+              <option value="price-asc">Giá tăng dần</option>
+              <option value="price-desc">Giá giảm dần</option>
+            </select>
           </div>
+
+          {paginated.length ? (
+            <>
+              <div style={{ ...S.productGrid, gridTemplateColumns }}>
+                {paginated.map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+              <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePage} />
+            </>
+          ) : (
+            <div style={S.empty}>Không tìm thấy sản phẩm phù hợp.</div>
+          )}
         </div>
       </div>
 
-      {/* Mobile full-screen filter */}
       {mode === 'mobile' && showMobileFilter && (
         <>
           <div style={S.mobileFilterOverlay} onClick={() => setShowMobileFilter(false)} />
@@ -224,6 +221,17 @@ export default function ProductsPage() {
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+/* ---------- Component chính bọc Suspense ---------- */
+export default function ProductsPage() {
+  return (
+    <div style={S.page}>
+      <Suspense fallback={<div style={S.loadingFallback}>Đang tải bộ sưu tập Aromis...</div>}>
+        <ProductsContent />
+      </Suspense>
     </div>
   );
 }
