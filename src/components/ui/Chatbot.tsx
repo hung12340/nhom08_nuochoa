@@ -33,7 +33,7 @@ export default function Chatbot() {
         content: msg.text
       }));
 
-      const optimizedData = products.slice(0, 15).map(p => ({
+      const optimizedData = products.slice(5, 20).map(p => ({
         n: p.name,
         b: p.brand,
         p: p.price,
