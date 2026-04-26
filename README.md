@@ -47,7 +47,7 @@
 
 ```bash
 npm install && npm run dev
-
+```
 ---
 
 ## 📸 Ảnh chụp giao diện
