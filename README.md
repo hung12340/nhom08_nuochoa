@@ -1,4 +1,4 @@
-# 🏺 AROMIS - Website Thương Mại Điện Tử Nước Hoa Cao Cấp
+# AROMIS - Website Thương Mại Điện Tử Nước Hoa Cao Cấp
 > **Nhóm 08** | **Đồ án môn học Thiết kế Web**
 
 ---
@@ -47,3 +47,15 @@
 
 ```bash
 npm install && npm run dev
+
+---
+
+## 📸 Ảnh chụp giao diện
+<p align="center">
+  <img src="public/images/screenshots/home.png" width="45%" alt="Trang chủ" />
+  <img src="public/images/screenshots/products.png" width="45%" alt="Danh sách sản phẩm" />
+</p>
+<p align="center">
+  <img src="public/images/screenshots/product.png" width="45%" alt="Chi tiết sản phẩm" />
+  <img src="public/images/screenshots/cart.png" width="45%" alt="Giỏ hàng" />
+</p>
